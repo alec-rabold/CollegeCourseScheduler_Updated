@@ -224,6 +224,37 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>com.microsoft.azure</groupId>
+                <artifactId>azure-webapp-maven-plugin</artifactId>
+                <version>1.5.4</version>
+                <configuration>
+                    <!-- Specify v2 schema -->
+                    <schemaVersion>v2</schemaVersion>
+                    <!-- App information -->
+                    <subscriptionId>a25a7f25-3c86-4158-90be-b67924473b1f</subscriptionId>
+                    <resourceGroup>myCollegePlanner</resourceGroup>
+                    <appName>myCollegePlanner</appName>
+                    <region>West Europe</region>
+
+                    <!-- Java Runtime Stack for App on Linux-->
+                    <runtime>
+                        <os>linux</os>
+                        <javaVersion>jre8</javaVersion>
+                        <webContainer>tomcat 8.5</webContainer>
+                    </runtime>
+                    <deployment>
+                        <resources>
+                            <resource>
+                                <directory>${project.basedir}/target</directory>
+                                <includes>
+                                    <include>*.war</include>
+                                </includes>
+                            </resource>
+                        </resources>
+                    </deployment>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
