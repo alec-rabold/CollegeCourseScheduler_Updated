@@ -11,10 +11,11 @@
     <div class="row">
         <div class="col-xs-11 col-md-offset-3 col-md-6">
             <h2 class="form f-shadow" style="text-align: center">Step 1: Select your school</h2>
-            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.UW_COMPLETE_PATH}'" style="margin-top: 20px;">University of Washington</button>
-            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.BERKELEY_COMPLETE_PATH}'">UC Berkeley</button>
-            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.UCSB_COMPLETE_PATH}'">UC Santa Barbara</button>
-            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.SDSU_COMPLETE_PATH}'">San Diego State University</button>
+            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.VSB_COMPLETE_PATH_UW}'" style="margin-top: 20px;">University of Washington</button>
+            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.VSB_COMPLETE_PATH_BERKELEY}'">UC Berkeley</button>
+            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.VSB_COMPLETE_PATH_BROWN}'">Brown University</button>
+            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.VSB_COMPLETE_PATH_UCSB}'">UC Santa Barbara</button>
+            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.VSB_COMPLETE_PATH_SDSU}'">San Diego State University</button>
         </div>
     </div>
 </div>

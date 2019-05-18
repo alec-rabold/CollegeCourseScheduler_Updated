@@ -35,6 +35,7 @@
         <link href="/css/icons.css" rel="stylesheet">
         <link href="/css/generics.css" rel="stylesheet">
 
+
         <!-- jQuery -->
         <script src="/js/jquery.min.js"></script> <!-- jQuery Library -->
         <script src="/js/jquery-ui.min.js"></script> <!-- jQuery UI -->
@@ -208,10 +209,11 @@
                             <span class="menu-item">Universities</span>
                         </a>
                         <ul class="list-unstyled menu-item">
-                            <li><a href="${Constants.UW_COMPLETE_PATH}">University of Washington</a></li>
-                            <li><a href="${Constants.BERKELEY_COMPLETE_PATH}">UC Berkeley</a></li>
-                            <li><a href="${Constants.SDSU_COMPLETE_PATH}">San Diego State </a></li>
-                            <li><a href="${Constants.UCSB_COMPLETE_PATH}">UC Santa Barbara</a></li>
+                            <li><a href="${Constants.VSB_COMPLETE_PATH_UW}">University of Washington</a></li>
+                            <li><a href="${Constants.VSB_COMPLETE_PATH_BERKELEY}">UC Berkeley</a></li>
+                            <li><a href="${Constants.VSB_COMPLETE_PATH_BROWN}">Brown University</a></li>
+                            <li><a href="${Constants.VSB_COMPLETE_PATH_SDSU}">San Diego State </a></li>
+                            <li><a href="${Constants.VSB_COMPLETE_PATH_UCSB}">UC Santa Barbara</a></li>
                         </ul>
                     </li>
                 </ul>

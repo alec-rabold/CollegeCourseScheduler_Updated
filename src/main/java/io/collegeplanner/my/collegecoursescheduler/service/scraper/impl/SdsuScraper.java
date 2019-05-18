@@ -278,7 +278,7 @@ public class SdsuScraper extends GenericScraper {
 
     /** Set the period/term to search in the URL */
     @Override
-    public void setTerm(final String season, final String year) {
+    public void setTermParameter(final String season, final String year) {
         final String termParameter = "&period=";
         final String seasonNumber;
 

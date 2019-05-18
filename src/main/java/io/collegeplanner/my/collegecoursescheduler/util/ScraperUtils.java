@@ -1,13 +1,8 @@
 package io.collegeplanner.my.collegecoursescheduler.util;
 
 import io.collegeplanner.my.collegecoursescheduler.model.dto.CourseSectionDto;
-import org.apache.commons.math3.util.CombinatoricsUtils;
 
-import java.math.BigInteger;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class ScraperUtils {
 
@@ -63,4 +58,53 @@ public class ScraperUtils {
         }
         return iterationVariables;
     }
+
+    public static Set<String> getDepartmentsFromChosenClasses(final Collection<String> chosenClasses) {
+        final Set<String> departments = new HashSet<>();
+        for(final String courseName : chosenClasses) {
+
+            final String dept = courseName.contains("-") ? courseName.substring(0, courseName.indexOf("-"))
+                    : courseName.substring(0, courseName.indexOf(" "));
+            departments.add(dept);
+        }
+        return departments;
+    }
+
+    public static ChainedParserMetadata parseData(final String indexStartChar, int startOffset, final int numCharsToParse, final String inputLine) {
+        final int indexStart = inputLine.indexOf(indexStartChar) + startOffset;
+        final int indexEnd = indexStart + numCharsToParse;
+        return parseData(indexStart, indexEnd, inputLine);
+    }
+    public static ChainedParserMetadata parseData(final String indexStartChar, int startOffset, final String indexEndChar, final String inputLine) {
+        final int indexStart = inputLine.indexOf(indexStartChar) + startOffset;
+        final int indexEnd = inputLine.indexOf(indexEndChar, indexStart); // starts the search from indexStart
+        return parseData(indexStart, indexEnd, inputLine);
+    }
+    public static ChainedParserMetadata parseData(final int indexStart, final String indexEndChar, final String inputLine) {
+        final int indexEnd = inputLine.indexOf(indexEndChar, indexStart);
+        return parseData(indexStart, indexEnd, inputLine);
+    }
+    public static ChainedParserMetadata parseData(final int indexStart, final int indexEnd, final String inputLine) {
+        try {
+            final String data = inputLine.substring(indexStart, indexEnd).trim();
+            final String value = cleanData(data);
+            return new ChainedParserMetadata(value, indexStart, indexEnd);
+        }
+        catch(final Exception e) {
+            System.out.println("inputLine: " + inputLine);
+        }
+        return null;
+    }
+    public static String cleanData(final String data) {
+        final StringBuilder modifiedData = new StringBuilder(data);
+        int indexLeft = data.indexOf('<');
+        int indexRight = data.indexOf('>');
+        while(indexLeft >= 0 && indexRight >= 0) {
+            modifiedData.delete(indexLeft, indexRight);
+            indexLeft = data.indexOf('<', indexLeft + 1);
+            indexRight = data.indexOf('>', indexRight + 1);
+        }
+        return modifiedData.toString();
+    }
+
 }

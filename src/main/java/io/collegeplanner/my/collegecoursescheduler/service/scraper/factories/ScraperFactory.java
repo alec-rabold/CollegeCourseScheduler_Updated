@@ -1,12 +1,10 @@
-package io.collegeplanner.my.collegecoursescheduler.service.scraper;
+package io.collegeplanner.my.collegecoursescheduler.service.scraper.factories;
 
 import com.google.common.collect.ImmutableList;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.FormParametersDto;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.UserOptionsDto;
-import io.collegeplanner.my.collegecoursescheduler.service.scraper.impl.UcsbScraper;
-import io.collegeplanner.my.collegecoursescheduler.service.scraper.impl.UwScraper;
-import io.collegeplanner.my.collegecoursescheduler.service.scraper.impl.BerkeleyScraper;
-import io.collegeplanner.my.collegecoursescheduler.service.scraper.impl.SdsuScraper;
+import io.collegeplanner.my.collegecoursescheduler.service.scraper.GenericScraper;
+import io.collegeplanner.my.collegecoursescheduler.service.scraper.impl.*;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.Arrays;
@@ -36,8 +34,8 @@ public final class ScraperFactory {
                 scraper = new UwScraper();
                 break;
             default:
-                log.error("Error creating scraper for college: {}", collegeName);
-                return null;
+                scraper = new EllucianScraper(collegeName);
+                break;
         }
         // TODO: make sure this works; change implementation
         //scraper.setOutWriter(servletResponse.getWriter());
@@ -103,7 +101,7 @@ public final class ScraperFactory {
                         .showOnlineClasses(Boolean.valueOf(params.getDoShowOnline()))
                         .build());
         scraper.setMobileBrowser(params.isMobileBrowser());
-        scraper.setTerm(params.getSeason(), params.getYear());
+        scraper.setTermParameter(params.getSeason(), params.getYear());
         return scraper;
     }
 

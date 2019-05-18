@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ParserMetadata {
+public class ChainedParserMetadata {
     private String data;
     private int startIndex;
     private int endIndex;

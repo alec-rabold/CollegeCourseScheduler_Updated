@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class ProfessorsDto {
     private String name;
+    private String value;
 }

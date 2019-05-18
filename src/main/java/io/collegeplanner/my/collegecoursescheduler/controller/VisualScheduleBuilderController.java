@@ -3,7 +3,7 @@ package io.collegeplanner.my.collegecoursescheduler.controller;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.PermutationsJobResultsDto;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.FormParametersDto;
 import io.collegeplanner.my.collegecoursescheduler.model.view.CollegeRepositoryData;
-import io.collegeplanner.my.collegecoursescheduler.repository.CourseMetadataDao;
+import io.collegeplanner.my.collegecoursescheduler.repository.RegistrationDataDao;
 import io.collegeplanner.my.collegecoursescheduler.service.ScheduleAnalyzerJob;
 import lombok.extern.log4j.Log4j2;
 import org.jdbi.v3.core.Jdbi;
@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import static io.collegeplanner.my.collegecoursescheduler.util.Constants.*;
 
 @Log4j2
 @Controller
-@RequestMapping(value = "/v1/university")
-public class ScheduleAnalyzerController {
+@RequestMapping(value = "/university")
+public class VisualScheduleBuilderController {
 
     // TODO: https://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/mvc.html#mvc-ann-async
 
@@ -30,7 +33,7 @@ public class ScheduleAnalyzerController {
     @RequestMapping(value = "/{collegeName}")
     public String userPreferencesForSchedule(@PathVariable final String collegeName,
                                              final ModelMap modelMap) {
-        final CollegeRepositoryData registrationData = jdbi.onDemand(CourseMetadataDao.class)
+        final CollegeRepositoryData registrationData = jdbi.onDemand(RegistrationDataDao.class)
                 .getRegistrationDataIndexForCollege(collegeName);
 
         modelMap.addAttribute(SELECTED_COLLEGE_ATTRIBUTE_NAME, collegeName);
@@ -40,17 +43,19 @@ public class ScheduleAnalyzerController {
     }
 
     @PostMapping(value = "/{collegeName}/results")
-    @ResponseBody
-    public PermutationsJobResultsDto runSchedulePermutations(@PathVariable final String collegeName,
-                                                             final FormParametersDto formParameters) {
-        return ScheduleAnalyzerJob.runScheduleAnalyzerJob(collegeName, formParameters);
+    public void runSchedulePermutations(final HttpServletRequest request,
+                                        final HttpServletResponse response,
+                                        @PathVariable final String collegeName,
+                                        final FormParametersDto formParameters) {
+        ScheduleAnalyzerJob.runScheduleAnalyzerJob(collegeName, formParameters, request, response);
     }
 
     @PostMapping(value = "/api/{collegeName}/results")
     @ResponseBody
     public PermutationsJobResultsDto returnSchedulePermutations(@PathVariable final String collegeName,
                                                                 final FormParametersDto formParameters) {
-        return ScheduleAnalyzerJob.runScheduleAnalyzerJob(collegeName, formParameters);
+        return ScheduleAnalyzerJob.runScheduleAnalyzerJob(collegeName, formParameters, null, null);
     }
 
 }
+

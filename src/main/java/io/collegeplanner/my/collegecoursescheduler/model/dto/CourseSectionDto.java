@@ -1,6 +1,7 @@
 package io.collegeplanner.my.collegecoursescheduler.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -9,8 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class CourseSectionDto implements Serializable {
     private String courseID;
     private String title;
@@ -23,8 +23,13 @@ public class CourseSectionDto implements Serializable {
     private List<String> instructors = new ArrayList<>();
     private CourseSectionDto parentCourse;
 
+//    @JsonIgnore
+//    public boolean isComplete() {
+//        return StringUtils.isNoneEmpty(courseID, scheduleNum, title, units, seats) && !times.isEmpty();
+//    }
+
     @JsonIgnore
     public boolean isComplete() {
-        return StringUtils.isNoneEmpty(courseID, scheduleNum, title, units, seats) && !times.isEmpty();
+        return StringUtils.isNoneEmpty(courseID, scheduleNum, title, units) && !times.isEmpty();
     }
 }

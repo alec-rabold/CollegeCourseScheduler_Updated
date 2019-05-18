@@ -1,7 +1,7 @@
 package io.collegeplanner.my.collegecoursescheduler.service.scraper.impl;
 
 import io.collegeplanner.my.collegecoursescheduler.model.dto.CourseSectionDto;
-import io.collegeplanner.my.collegecoursescheduler.util.ParserMetadata;
+import io.collegeplanner.my.collegecoursescheduler.util.ChainedParserMetadata;
 import io.collegeplanner.my.collegecoursescheduler.service.scraper.GenericScraper;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -202,7 +202,7 @@ public class UwScraper extends GenericScraper {
                  *              Building Abbr. | Room # | Open/Closed | Seats (Remaining/Total)
                  *  Store index end location of each successive data and use to locate the next
                  */
-                ParserMetadata chainedParser;
+                ChainedParserMetadata chainedParser;
 
                 /** Find schedule number (same process as above; doesn't use chainedParser) */
                 newCourse.setScheduleNum(
@@ -432,7 +432,7 @@ public class UwScraper extends GenericScraper {
 
     /** Set the period/term to search in the URL */
     @Override
-    public void setTerm(final String season, final String year) {
+    public void setTermParameter(final String season, final String year) {
         String seasonName = "";
         switch (season) {
             case "Winter":
@@ -457,19 +457,19 @@ public class UwScraper extends GenericScraper {
      ***** --------------------  ****/
 
     /** Extracts data from HTML tags */
-    private ParserMetadata parseData(final String indexStartChar, int startOffset, final int numCharsToParse, final String inputLine) {
+    private ChainedParserMetadata parseData(final String indexStartChar, int startOffset, final int numCharsToParse, final String inputLine) {
         final int indexStart = inputLine.indexOf(indexStartChar) + startOffset;
         final int indexEnd = indexStart + numCharsToParse;
         return parseData(indexStart, indexEnd, inputLine);
     }
-    private ParserMetadata parseData(final String indexStartChar, int startOffset, final String indexEndChar, final String inputLine) {
+    private ChainedParserMetadata parseData(final String indexStartChar, int startOffset, final String indexEndChar, final String inputLine) {
         final int indexStart = inputLine.indexOf(indexStartChar) + startOffset;
         final int indexEnd = inputLine.indexOf(indexEndChar, indexStart); // starts the search from indexStart
         return parseData(indexStart, indexEnd, inputLine);
     }
-    private ParserMetadata parseData(final int indexStart, final int indexEnd, final String inputLine) {
+    private ChainedParserMetadata parseData(final int indexStart, final int indexEnd, final String inputLine) {
         final String value = inputLine.substring(indexStart, indexEnd).trim();
-        return new ParserMetadata(value, indexStart, indexEnd);
+        return new ChainedParserMetadata(value, indexStart, indexEnd);
     }
 
     /** Gets unique HTML addresses for each chosen department */

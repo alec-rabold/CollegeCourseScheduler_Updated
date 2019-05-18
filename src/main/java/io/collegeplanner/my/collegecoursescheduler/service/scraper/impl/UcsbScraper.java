@@ -307,7 +307,7 @@ public class UcsbScraper extends GenericScraper {
     }
 
     @Override
-    public void setTerm(String season, String year) {
+    public void setTermParameter(String season, String year) {
         String seasonNumber = "";
         switch (season) {
             case "Winter":

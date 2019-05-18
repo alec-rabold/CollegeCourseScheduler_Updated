@@ -245,7 +245,7 @@ public class BerkeleyScraper extends GenericScraper {
 
     /** Set the period/term to search in the URL */
     @Override
-    public void setTerm(final String season, final String year) {
+    public void setTermParameter(final String season, final String year) {
         String seasonNumber = "";
         switch (season) {
             case "Winter":

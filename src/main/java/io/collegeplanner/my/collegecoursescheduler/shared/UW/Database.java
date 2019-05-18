@@ -1,6 +1,6 @@
 package io.collegeplanner.my.collegecoursescheduler.shared.UW;
 
-import io.collegeplanner.my.collegecoursescheduler.util.ParserMetadata;
+import io.collegeplanner.my.collegecoursescheduler.util.ChainedParserMetadata;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -129,19 +129,19 @@ public class Database {
 
 
 
-    private ParserMetadata parseData(final String indexStartChar, int startOffset, final int numCharsToParse, final String inputLine) {
+    private ChainedParserMetadata parseData(final String indexStartChar, int startOffset, final int numCharsToParse, final String inputLine) {
         final int indexStart = inputLine.indexOf(indexStartChar) + startOffset;
         final int indexEnd = indexStart + numCharsToParse;
         return parseData(indexStart, indexEnd, inputLine);
     }
-    private ParserMetadata parseData(final String indexStartChar, int startOffset, final String indexEndChar, final String inputLine) {
+    private ChainedParserMetadata parseData(final String indexStartChar, int startOffset, final String indexEndChar, final String inputLine) {
         final int indexStart = inputLine.indexOf(indexStartChar) + startOffset;
         final int indexEnd = inputLine.indexOf(indexEndChar, indexStart); // starts the search from indexStart
         return parseData(indexStart, indexEnd, inputLine);
     }
-    private ParserMetadata parseData(final int indexStart, final int indexEnd, final String inputLine) {
+    private ChainedParserMetadata parseData(final int indexStart, final int indexEnd, final String inputLine) {
         final String value = inputLine.substring(indexStart, indexEnd).trim();
-        return new ParserMetadata(value, indexStart, indexEnd);
+        return new ChainedParserMetadata(value, indexStart, indexEnd);
     }
 
     /** Gets unique HTML addresses for each chosen department */

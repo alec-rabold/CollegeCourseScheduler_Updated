@@ -1,7 +1,7 @@
 package io.collegeplanner.my.collegecoursescheduler.service.scraper.impl;
 
 import io.collegeplanner.my.collegecoursescheduler.model.dto.CourseSectionDto;
-import io.collegeplanner.my.collegecoursescheduler.util.ParserMetadata;
+import io.collegeplanner.my.collegecoursescheduler.util.ChainedParserMetadata;
 import io.collegeplanner.my.collegecoursescheduler.service.scraper.GenericScraper;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -166,85 +166,85 @@ public class WsuScraper extends GenericScraper {
 
                 // If it IS a lecture (or section), continue down here
                 // When code reaches this point, the class is a section/additional class for a lecture
-
-                /** Find schedule number */
-                while(!inputLine.contains(WSU_SCHEDULE_NUMBER_MARKER)) inputLine = in.readLine();
-                newCourse.setScheduleNum(
-                    parseData(WSU_SCHEDULE_NUM_MARKER_START, WSU_SCHEDULE_NUM_MARKER_START.length(),
-                                WSU_SCHEDULE_NUM_MARKER_END, inputLine)
-                            .getData()
-                );
-
-                /** Find Units / Section Type */
-                while(!inputLine.contains(WSU_UNITS_MARKER)) inputLine = in.readLine();
-                newCourse.setUnits(
-                    parseData(WSU_UNITS_MARKER_START, WSU_UNITS_MARKER_START.length(),
-                            WSU_UNITS_MARKER_END, inputLine)
-                        .getData()
-                );
-
-                /** Find Meeting Days and Times */
-                while(!inputLine.contains(WSU_UNITS_MARKER)) inputLine = in.readLine();
-                final String combinedDaysAndTimes = parseData(WSU_DAYS_AND_TIMES_MARKER_START,
-                        WSU_DAYS_AND_TIMES_MARKER_START.length(), WSU_DAYS_AND_TIMES_MARKER_END, inputLine);
-                // Find first instance of a digit
-                String timeblock = "";
-                for(int i = 0; i < combinedDaysAndTimes.length(); i++) {
-                    if(Character.isDigit(combinedDaysAndTimes.charAt(i))) {
-                        newCourse.getDays().add(
-                            combinedDaysAndTimes.substring(0, i).replace(",", "")
-                        );
-                        timeblock = combinedDaysAndTimes.substring(i).replace(".", ":");
-                    }
-                }
-
-                /** Meeting TimeBlock Formatting */
-                try {
-                    String parsedStartTime = timeblock.substring(0, timeblock.indexOf("-"));
-                    String parsedEndTime = timeblock.substring(timeblock.indexOf("-") + 1);
-
-                    // convert to 4-digits
-                    if(parsedStartTime.length() == 2) {
-                        parsedStartTime += ":00";
-                    }
-                    if(parsedEndTime.length() == 2) {
-                        parsedEndTime += ":00";
-                    }
-
-                    final String formattedTime = parsedStartTime + "-" + parsedEndTime;
-                    newCourse.getTimes().add(formattedTime);
-                }
-                catch(final Exception e) {
-                    log.fatal("Error retrieving/parsing time: \n\t" +
-                            "Department:" + department + "\n\t" +
-                            "CourseBundle ID: " + courseBundleID + "\n\t" +
-                            "ScheduleDto Number: " + newCourse.getScheduleNum() + "\n\t" +
-                            "Input line: " + inputLine, e);
-                }
-
-                /** Find Building Abbrev. and Room # */
-                while(!inputLine.contains(WSU_BUILDING_ABBR_MARKER)) inputLine = in.readLine();
-                newCourse.getLocations().add(parseData(WSU_BUILDING_ABBR_MARKER_START,
-                            WSU_BUILDING_ABBR_MARKER_START.length(), WSU_BUILDING_ABBR_MARKER_END, inputLine)
-                        .getData()
-                );
-
-                /** Find Professor */
-                while(!inputLine.contains(WSU_PROFESSOR_MARKER)) inputLine = in.readLine();
-                newCourse.getLocations().add(parseData(WSU_PROFESSOR_MARKER_START,
-                            WSU_PROFESSOR_MARKER_START.length(), WSU_PROFESSOR_MARKER_END, inputLine)
-                        .getData()
-                );
-                /** Find Seats (Remaining/Total) */
-                while(!inputLine.contains(WSU_SEATS_ALLOTTED_MARKER)) inputLine = in.readLine();
-                final String seatsAllotted = parseData(WSU_SEATS_ALLOTTED_MARKER_START,
-                        WSU_SEATS_ALLOTTED_MARKER_START.length(), WSU_SEATS_ALLOTTED_MARKER_END, inputLine);
-                while(!inputLine.contains(WSU_SEATS_TAKEN_MARKER)) inputLine = in.readLine();
-                final String seatsTaken = parseData(WSU_SEATS_TAKEN_MARKER_START,
-                        WSU_SEATS_TAKEN_MARKER_START_START.length(), WSU_SEATS_TAKEN_MARKER_END, inputLine);
-                final String seats = seatsTaken + "/" + seatsAllotted;
-                newCourse.setSeats(seats);
-
+//
+//                /** Find schedule number */
+//                while(!inputLine.contains(WSU_SCHEDULE_NUMBER_MARKER)) inputLine = in.readLine();
+//                newCourse.setScheduleNum(
+//                    parseData(WSU_SCHEDULE_NUM_MARKER_START, WSU_SCHEDULE_NUM_MARKER_START.length(),
+//                                WSU_SCHEDULE_NUM_MARKER_END, inputLine)
+//                            .getData()
+//                );
+//
+//                /** Find Units / Section Type */
+//                while(!inputLine.contains(WSU_UNITS_MARKER)) inputLine = in.readLine();
+//                newCourse.setUnits(
+//                    parseData(WSU_UNITS_MARKER_START, WSU_UNITS_MARKER_START.length(),
+//                            WSU_UNITS_MARKER_END, inputLine)
+//                        .getData()
+//                );
+//
+//                /** Find Meeting Days and Times */
+//                while(!inputLine.contains(WSU_UNITS_MARKER)) inputLine = in.readLine();
+//                final String combinedDaysAndTimes = parseData(WSU_DAYS_AND_TIMES_MARKER_START,
+//                        WSU_DAYS_AND_TIMES_MARKER_START.length(), WSU_DAYS_AND_TIMES_MARKER_END, inputLine);
+//                // Find first instance of a digit
+//                String timeblock = "";
+//                for(int i = 0; i < combinedDaysAndTimes.length(); i++) {
+//                    if(Character.isDigit(combinedDaysAndTimes.charAt(i))) {
+//                        newCourse.getDays().add(
+//                            combinedDaysAndTimes.substring(0, i).replace(",", "")
+//                        );
+//                        timeblock = combinedDaysAndTimes.substring(i).replace(".", ":");
+//                    }
+//                }
+//
+//                /** Meeting TimeBlock Formatting */
+//                try {
+//                    String parsedStartTime = timeblock.substring(0, timeblock.indexOf("-"));
+//                    String parsedEndTime = timeblock.substring(timeblock.indexOf("-") + 1);
+//
+//                    // convert to 4-digits
+//                    if(parsedStartTime.length() == 2) {
+//                        parsedStartTime += ":00";
+//                    }
+//                    if(parsedEndTime.length() == 2) {
+//                        parsedEndTime += ":00";
+//                    }
+//
+//                    final String formattedTime = parsedStartTime + "-" + parsedEndTime;
+//                    newCourse.getTimes().add(formattedTime);
+//                }
+//                catch(final Exception e) {
+//                    log.fatal("Error retrieving/parsing time: \n\t" +
+//                            "Department:" + department + "\n\t" +
+//                            "CourseBundle ID: " + courseBundleID + "\n\t" +
+//                            "ScheduleDto Number: " + newCourse.getScheduleNum() + "\n\t" +
+//                            "Input line: " + inputLine, e);
+//                }
+//
+//                /** Find Building Abbrev. and Room # */
+//                while(!inputLine.contains(WSU_BUILDING_ABBR_MARKER)) inputLine = in.readLine();
+//                newCourse.getLocations().add(parseData(WSU_BUILDING_ABBR_MARKER_START,
+//                            WSU_BUILDING_ABBR_MARKER_START.length(), WSU_BUILDING_ABBR_MARKER_END, inputLine)
+//                        .getData()
+//                );
+//
+//                /** Find Professor */
+//                while(!inputLine.contains(WSU_PROFESSOR_MARKER)) inputLine = in.readLine();
+//                newCourse.getLocations().add(parseData(WSU_PROFESSOR_MARKER_START,
+//                            WSU_PROFESSOR_MARKER_START.length(), WSU_PROFESSOR_MARKER_END, inputLine)
+//                        .getData()
+//                );
+//                /** Find Seats (Remaining/Total) */
+//                while(!inputLine.contains(WSU_SEATS_ALLOTTED_MARKER)) inputLine = in.readLine();
+//                final String seatsAllotted = parseData(WSU_SEATS_ALLOTTED_MARKER_START,
+//                        WSU_SEATS_ALLOTTED_MARKER_START.length(), WSU_SEATS_ALLOTTED_MARKER_END, inputLine);
+//                while(!inputLine.contains(WSU_SEATS_TAKEN_MARKER)) inputLine = in.readLine();
+//                final String seatsTaken = parseData(WSU_SEATS_TAKEN_MARKER_START,
+//                        WSU_SEATS_TAKEN_MARKER_START_START.length(), WSU_SEATS_TAKEN_MARKER_END, inputLine);
+//                final String seats = seatsTaken + "/" + seatsAllotted;
+//                newCourse.setSeats(seats);
+//
 
                 // If it has every data point we need, then add it to the Course Map
                 //   (for readability.. this will be "true" after AT LEAST one iteration of this while loop)
@@ -346,7 +346,7 @@ public class WsuScraper extends GenericScraper {
 
     /** Set the period/term to search in the URL */
     @Override
-    public void setTerm(final String season, final String year) {
+    public void setTermParameter(final String season, final String year) {
         String seasonName = "";
         switch (season) {
             case "Winter":
@@ -371,19 +371,19 @@ public class WsuScraper extends GenericScraper {
      ***** --------------------  ****/
 
     /** Extracts data from HTML tags */
-    private ParserMetadata parseData(final String indexStartChar, int startOffset, final int numCharsToParse, final String inputLine) {
+    private ChainedParserMetadata parseData(final String indexStartChar, int startOffset, final int numCharsToParse, final String inputLine) {
         final int indexStart = inputLine.indexOf(indexStartChar) + startOffset;
         final int indexEnd = indexStart + numCharsToParse;
         return parseData(indexStart, indexEnd, inputLine);
     }
-    private ParserMetadata parseData(final String indexStartChar, int startOffset, final String indexEndChar, final String inputLine) {
+    private ChainedParserMetadata parseData(final String indexStartChar, int startOffset, final String indexEndChar, final String inputLine) {
         final int indexStart = inputLine.indexOf(indexStartChar) + startOffset;
         final int indexEnd = inputLine.indexOf(indexEndChar, indexStart); // starts the search from indexStart
         return parseData(indexStart, indexEnd, inputLine);
     }
-    private ParserMetadata parseData(final int indexStart, final int indexEnd, final String inputLine) {
+    private ChainedParserMetadata parseData(final int indexStart, final int indexEnd, final String inputLine) {
         final String value = inputLine.substring(indexStart, indexEnd).trim();
-        return new ParserMetadata(value, indexStart, indexEnd);
+        return new ChainedParserMetadata(value, indexStart, indexEnd);
     }
 
     /** Gets unique HTML addresses for each chosen department */
