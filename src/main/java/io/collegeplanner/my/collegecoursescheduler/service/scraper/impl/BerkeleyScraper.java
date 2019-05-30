@@ -14,7 +14,8 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import static io.collegeplanner.my.collegecoursescheduler.util.Constants.REGISTRATION_SEARCH_PAGE_BERKELEY;
 import static io.collegeplanner.my.collegecoursescheduler.util.Constants.UNIVERSITY_OF_CALIFORNIA_BERKELEY;
@@ -121,10 +122,10 @@ public class BerkeleyScraper extends GenericScraper {
 
                 String classType = classData.optJSONObject("component").optString("code");
                 String courseName = classData.getJSONObject("class").getJSONObject("course").getString("displayName");
-                curCourse.setCourseID(classType.equals("LEC") ? courseName : courseName + " " + classType);
+                curCourse.setCourse(classType.equals("LEC") ? courseName : courseName + " " + classType);
 
                 curCourse.setTitle(classData.optJSONObject("class").optJSONObject("course").optString("title"));
-                curCourse.setScheduleNum(classData.optString("id"));
+                curCourse.setSchedNum(classData.optString("id"));
                 JSONArray meetings = classData.optJSONArray("meetings");
 
                 curCourse.setUnits(classData.optJSONObject("class").optJSONObject("allowedUnits").optString("forAcademicProgress"));
@@ -159,13 +160,13 @@ public class BerkeleyScraper extends GenericScraper {
                     else curCourse.setSeats((maxEnroll - enrollmentStatus.optInt("enrolledCount")) + "/" + maxEnroll);
                 }
                 if (curCourse.isComplete()) {
-                    if(!courseSectionsMap.containsKey(curCourse.getCourseID())) {
-                        courseSectionsMap.put(curCourse.getCourseID(), new ArrayList<>());
+                    if(!courseSectionsMap.containsKey(curCourse.getCourse())) {
+                        courseSectionsMap.put(curCourse.getCourse(), new ArrayList<>());
                     }
                     // TODO: beware of duplicates getting into lists; check that lists DON'T contain the course already
-                    courseSectionsMap.get(curCourse.getCourseID()).add(curCourse);
+                    courseSectionsMap.get(curCourse.getCourse()).add(curCourse);
                 }
-                else System.out.println("Course thrown away: " + curCourse.getScheduleNum());
+                else System.out.println("Course thrown away: " + curCourse.getSchedNum());
             }
             long totalTime = System.currentTimeMillis() - timerStart;
             float benchmark = totalTime / 1000.0f;

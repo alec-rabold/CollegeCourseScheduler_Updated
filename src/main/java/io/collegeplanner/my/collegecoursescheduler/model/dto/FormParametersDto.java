@@ -1,12 +1,14 @@
 package io.collegeplanner.my.collegecoursescheduler.model.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Wither
 @Builder
 @NoArgsConstructor

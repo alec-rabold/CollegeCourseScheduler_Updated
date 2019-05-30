@@ -9,20 +9,26 @@
 <!----------- COLLEGE --------------->
 <div class="block-area">
     <div class="row">
-        <div class="col-xs-11 col-md-offset-3 col-md-6">
-            <h2 class="form f-shadow" style="text-align: center">Step 1: Select your school</h2>
-            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.VSB_COMPLETE_PATH_UW}'" style="margin-top: 20px;">University of Washington</button>
-            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.VSB_COMPLETE_PATH_BERKELEY}'">UC Berkeley</button>
-            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.VSB_COMPLETE_PATH_BROWN}'">Brown University</button>
-            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.VSB_COMPLETE_PATH_UCSB}'">UC Santa Barbara</button>
-            <button class="banner btn btn-block btn-alt" onclick="location.href='${Constants.VSB_COMPLETE_PATH_SDSU}'">San Diego State University</button>
+        <!--div class="col-xs-11 col-md-offset-3 col-md-6"-->
+        <div class="col-xs-11 col-md-offset-2 col-md-8">
+            <h2 class="form bold f-shadow" style="text-align: center">Step 1: Select your school</h2>
+            <hr class="preview-rule">
+            <div class="col-xs-12 col-md-offset-2 col-md-8">
+                <!--button class="banner btn btn-block btn-alt university" onclick="location.href='${Constants.VSB_COMPLETE_PATH_UW}'" style="margin-top: 20px;">University of Washington</button>
+                <button class="banner btn btn-block btn-alt university" onclick="location.href='${Constants.VSB_COMPLETE_PATH_BERKELEY}'">UC Berkeley</button>
+                <button class="banner btn btn-block btn-alt university" onclick="location.href='${Constants.VSB_COMPLETE_PATH_BROWN}'">Brown University</button>
+                <button class="banner btn btn-block btn-alt university" onclick="location.href='${Constants.VSB_COMPLETE_PATH_UCSB}'">UC Santa Barbara</button-->
+                <button class="banner btn btn-block btn-alt university" onclick="location.href='${Constants.VSB_COMPLETE_PATH_SDSU}'">San Diego State University</button>
+                <button class="banner btn btn-block btn-alt disabled">Big Update Coming Soon!</button>
+                <button class="banner btn btn-block btn-alt disabled">700+ new universities to be supported</button>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="block-area">
+<div class="block-area preview-sched">
     <hr class="preview-rule">
-    <h2 class="form f-shadow" style="margin: 5px 0px 15px 0px; text-align: center;">Preview</h2>
+    <h2 class="form f-shadow bold" style="margin: 5px 0px 15px 0px; text-align: center;">Preview</h2>
     <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
         <div class="carousel-inner">
             <div class="item active">

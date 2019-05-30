@@ -33,7 +33,7 @@ public class Database {
                 deptSet.add(dept);
                 List<CourseSectionDto> deptCourseList = departments.get(dept);
                 for (final CourseSectionDto crs : deptCourseList) {
-                    idSet.add(crs.getCourseID());
+                    idSet.add(crs.getCourse());
                     courseSet.add(crs.getTitle());
                     for (int k = 0; k < crs.getInstructors().size(); k++) {
                         // A. Narang --> Narang, A.

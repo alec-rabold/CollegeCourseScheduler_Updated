@@ -119,6 +119,7 @@ public class Constants {
     public static final int EIGHT_UNITS = 8;
     public static final int NINE_UNITS  = 9;
     public static final int TEN_UNITS   = 10;
+    public static final String SECONDS_ABBR = "s";
     public static final int SCHEDULE_NUM_LENGTH = 5;
     public static final String SPACE_CHARACTER = " ";
     public static final String EMPTY_STRING = "";

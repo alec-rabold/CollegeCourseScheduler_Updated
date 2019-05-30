@@ -9,6 +9,25 @@ $('input.days').val('0').prop('checked', false);
 
 $(document).ready(function() {
 
+    $("#submit-preferences").on("click", function(e){
+        // Creates array of days
+        $('input.days').prop('checked', true);
+
+        var val = $("input[name='doApi']:checked").val();
+        if(val === 'true') {
+            e.preventDefault();
+            var action = $('#preferences-form').attr('action');
+            var apiAction = "/v1" + action;
+            $('#preferences-form').attr('action', apiAction).submit();
+        }
+    });
+
+
+    var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+    if (isMobile.matches) {
+        $('#preview-sched').addClass('hidden');
+    }
+
     var $myGroup = $('#myGroup');
     $myGroup.on('show.bs.collapse','.collapse', function() {
         $myGroup.find('.collapse.in').collapse('hide');
@@ -53,10 +72,10 @@ $(document).ready(function() {
         });
     });
 
-    // Creates array of days
-    $('#submit-preferences').on('click', function(){
-        $('input.days').prop('checked', true);
-    });
+    // $('#submit-preferences').on('click', function(){
+    //     $('input.days').prop('checked', true);
+    // });
+
 
     $('input.days:checkbox').on('ifClicked', function(event){
         $(this).attr('value',Math.abs(parseInt($(this).attr('value')) - 1));

@@ -1,14 +1,12 @@
 package io.collegeplanner.my.collegecoursescheduler.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @RequiredArgsConstructor
 public class ScheduleDto implements Comparable<ScheduleDto> {
     private int scheduleRank;
@@ -18,11 +16,12 @@ public class ScheduleDto implements Comparable<ScheduleDto> {
     @JsonIgnore private final int courseTimeDensityMetric;
     @JsonIgnore private final int totalClassesPerWeekCount;
     @JsonIgnore private final long[] layoutIdentifierForDeduplication;
-    @JsonIgnore private int rankingScore;
+//    @JsonIgnore private int rankingScore;
+    @JsonIgnore private final UserOptionsDto userOptions;
 
     // TODO: more logical ranking algorithm..
-    public void setRankingScore(final UserOptionsDto userOptions) {
-        this.rankingScore = userOptions.getScheduleSpreadPreference()
+    public int scoreSchedule() {
+        return this.userOptions.getScheduleSpreadPreference()
                 * (2  * this.courseTimeDensityMetric)
                 - (45 * this.wantedProfessorsCount)
                 + (55 * this.unwantedProfessorsCount)
@@ -32,6 +31,7 @@ public class ScheduleDto implements Comparable<ScheduleDto> {
 
     @Override
     public int compareTo(final ScheduleDto otherSchedule) {
-        return ((Integer)otherSchedule.rankingScore).compareTo(this.rankingScore);
+        final int similarity = ((Integer)otherSchedule.scoreSchedule()).compareTo(this.scoreSchedule());
+        return similarity == 0 ? 1 : similarity;
     }
 }

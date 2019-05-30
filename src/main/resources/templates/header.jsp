@@ -35,7 +35,6 @@
         <link href="/css/icons.css" rel="stylesheet">
         <link href="/css/generics.css" rel="stylesheet">
 
-
         <!-- jQuery -->
         <script src="/js/jquery.min.js"></script> <!-- jQuery Library -->
         <script src="/js/jquery-ui.min.js"></script> <!-- jQuery UI -->
@@ -139,7 +138,7 @@
                         </h2>
                         <div class="s-widget-body">
                             <div class="side-border">
-                                <small>Personalized Schedule Suggestions</small>
+                                <small>Visual Schedule Builder</small>
                                 <div class="progress progress-small">
                                     <a href="#" data-toggle="tooltip" title="" class="progress-bar tooltips progress-bar-danger" style="width: 92%;" data-original-title="92%">
                                         <span class="sr-only">92% Complete</span>
@@ -147,10 +146,10 @@
                                 </div>
                             </div>
                             <div class="side-border">
-                                <small>AWS EC2 Instance</small>
+                                <small>REST API (beta)</small>
                                 <div class="progress progress-small">
-                                    <a href="#" data-toggle="tooltip" title="" class="tooltips progress-bar progress-bar-info" style="width: 96%;" data-original-title="96%">
-                                        <span class="sr-only">96% Complete</span>
+                                    <a href="#" data-toggle="tooltip" title="" class="tooltips progress-bar progress-bar-info" style="width: 66%;" data-original-title="66%">
+                                        <span class="sr-only">66% Complete</span>
                                     </a>
                                 </div>
                             </div>
@@ -174,6 +173,14 @@
                                 <small>Functionality: UC Berkeley</small>
                                 <div class="progress progress-small">
                                     <a href="#" data-toggle="tooltip" title="" class="tooltips progress-bar progress-bar-success" style="width: 86%;" data-original-title="86%">
+                                        <span class="sr-only">86% Complete</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="side-border">
+                                <small>Enterprise Integration (700+ universities)</small>
+                                <div class="progress progress-small">
+                                    <a href="#" data-toggle="tooltip" title="" class="tooltips progress-bar progress-bar-info" style="width: 86%;" data-original-title="86%">
                                         <span class="sr-only">86% Complete</span>
                                     </a>
                                 </div>
@@ -418,7 +425,7 @@
                 </ol>
                 <h4 class="page-title">DASHBOARD</h4><!-- Collapse -->
                 <div class="block-area" id="collapse">
-                    <h1 class="f-shadow">Schedule Optimizer v1.0</h1>
+                    <h1 class="f-shadow bold">Schedule Optimizer v1.0</h1>
                     <div class="accordion tile">
                         <div class="panel-group block" id="accordion">
                             <div class="panel panel-default">
@@ -466,7 +473,7 @@
                                 </div>
                                 <div id="collapseTwo" class="panel-collapse collapse in">
                                     <div class="panel-body">
-                                        This tool is hosted from an AWS EC2 t2.micro running Tomcat 8 and is connected to a small db.t2.micro RDS database. In order to get the most accurate results, we retrieve data from University registration databases in real time whenever a user submits their request. The user's desired courses (along with all other options) are passed along to an HTTPServlet container which processes and filters the schedule permutations. If a schedule is valid, it's offered into a Priority Queue which optimally sorts each schedule according to a unique algorithm based on the user's preferences. The servlet then constructs a dynamic table displaying thef  top 25 schedules and maps the URL to a series of web-view containers. This project makes use of Java Server Pages (JSP}, MySQL, AJAX, JSON/GSON, JSTL, HTTPServlet containers, jQuery/JavaScript, Apache Tomcat, and AWS integration.
+                                        This tool is hosted from an AWS EC2 t2.micro running Tomcat 8 and is connected to a small db.t2.micro RDS database. In order to get the most accurate results, we retrieve data from University registration databases in real time whenever a user submits their request. The user's desired courses (along with all other options) are passed along to an HTTPServlet container which processes and filters the schedule permutations. If a schedule is valid, it's ranked against all other schedules according to a simple algorithm based on the user's preferences. The web-app then constructs a visual table displaying the top 25 schedules. This project makes use of Spring MVC/Boot, AWS EC2 / RDS / Route 53 / Elastic Beanstalk, Java Server Pages (JSP}, MySQL, AJAX, JSON/GSON, JSTL, web-view containers, jQuery/JavaScript, and Apache Tomcat.
                                     </div>
                                 </div>
                             </div>
@@ -493,7 +500,7 @@
                                                     </div>
                                                     <li>Where can I learn how to make something like this?</li>
                                                     <div class="faq-res">
-                                                        Attend a hackathon! Otherwise, if you attend SDSU, I'm a Microsoft Student Partner and we hold tech workshops every other Wednesday with the Association of Computing Machinery (ACM).
+                                                        Attend a hackathon! Otherwise, if you attend SDSU, the ACM holds tech workshops every other Wednesday alongisde Microsoft @ San Diego State..
                                                         Like our page on Facebook to stay updated! <a href="https://www.facebook.com/microsoftSDSU/" target="_blank">https://www.facebook.com/microsoftSDSU/</a>
                                                     </div>
                                                 </ul>
@@ -502,7 +509,7 @@
                                                 <ul class="lists-faq">
                                                     <li>How did this project take shape?</li>
                                                     <div class="faq-res">
-                                                        It began as a small idea at UCSB's annual hackathon and rapidly grew in size over the course of a weekend. We were able to hack functionality for UCSB, SDSU, and UC Berkeley despite their particularly dissimilar registration systems. Excited to make new leaps and strides with this project in the future!
+                                                        It began as a small pet-project which rapidly grew in size. We were able to functionality for UCSB, SDSU, Brown, WSU and UC Berkeley with 700+ universities to be supported in the next update. We're excited to continue improving this project in the future!
                                                     </div>
                                                     <li>What kind of data do you log?</li>
                                                     <div class="faq-res">

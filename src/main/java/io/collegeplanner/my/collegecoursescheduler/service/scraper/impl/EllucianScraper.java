@@ -102,7 +102,7 @@ public class EllucianScraper extends GenericScraper {
                 chainedParser = parseData(chainedParser.getEndIndex() + TWO_UNITS,
                         ELLUCIAN_SCHEDULE_NUMBER_MARKER_END, inputLine);
                 courseBundleSchedNum = chainedParser.getData();
-                // newCourse.setScheduleNum(chainedParser.getData());
+                // newCourse.setSchedNum(chainedParser.getData());
 
                 /** CourseID */
                 chainedParser = parseData(chainedParser.getEndIndex() + TWO_UNITS,
@@ -110,8 +110,8 @@ public class EllucianScraper extends GenericScraper {
                 // final String formattedCourseId = chainedParser.getData().replace(" ", "-");
                 // courseBundleID = formattedCourseId;
                 courseBundleID = chainedParser.getData();
-                // newCourse.setCourseID(formattedCourseId);
-                // courseID = formattedCourseId;
+                // newCourse.setCourse(formattedCourseId);
+                // course = formattedCourseId;
 
                 // If this class is one the user chose, then keep processing. Else continue searching
                 if (!super.getUserOptions().getChosenCourseNames().contains(courseBundleID)) {
@@ -125,7 +125,7 @@ public class EllucianScraper extends GenericScraper {
 
 //            }
 
-            // newCourse.setCourseID(courseBundleID);
+            // newCourse.setCourse(courseBundleID);
 
             /** === Course Title === */
             // newCourse.setTitle(courseBundleTitle);
@@ -164,8 +164,8 @@ public class EllucianScraper extends GenericScraper {
                             }
                             newCourse = new CourseSectionDto();
                             newCourse.setTitle(courseBundleTitle);
-                            newCourse.setCourseID(courseBundleID);
-                            newCourse.setScheduleNum(courseBundleSchedNum);
+                            newCourse.setCourse(courseBundleID);
+                            newCourse.setSchedNum(courseBundleSchedNum);
                             newCourse.setUnits(courseBundleUnits);
                             break findData;
                         }
@@ -235,7 +235,7 @@ public class EllucianScraper extends GenericScraper {
                         ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START.length(), ELLUCIAN_SECTIONS_TABLE_COL_MARKER_END,
                         inputLine).getData();
                 final String formattedSchedType = formatSchedType(scheduleType);
-                newCourse.setCourseID(courseBundleID + formattedSchedType);
+                newCourse.setCourse(courseBundleID + formattedSchedType);
                 /** Instructor */
                 inputLine = in.readLine();
                 final String parsedInstructor = parseData(ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START,
@@ -254,11 +254,11 @@ public class EllucianScraper extends GenericScraper {
                 // TODO: maybe I should put this at the bottom for better readability.. would that work?
                 if (newCourse.isComplete()) {
                     // If the map doesn't already contain an array list for this class, make a new list
-                    if (!courseMap.containsKey(newCourse.getCourseID())) {
-                        courseMap.put(newCourse.getCourseID(), new ArrayList<>());
+                    if (!courseMap.containsKey(newCourse.getCourse())) {
+                        courseMap.put(newCourse.getCourse(), new ArrayList<>());
                     }
                     // Add course to the hash map
-                    courseMap.get(newCourse.getCourseID()).add(newCourse);
+                    courseMap.get(newCourse.getCourse()).add(newCourse);
                 }
 
                 // Read next line to decide what action to take

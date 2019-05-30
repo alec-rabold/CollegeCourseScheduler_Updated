@@ -2350,16 +2350,25 @@ a.list-group-item.active > .badge,
 }
 
 /* ETC */
+h1.bold, h2.bold {
+    font-family: "Arial", Arial;
+    font-weight: 600 !important;
+}
 
 h2.form
 {
 	color: #FFD600;
     text-shadow: -2px 0 black, 0 2px black, 1px 0 black, 0 -1px black;
-    font-weight: 800;
-    font-size: 42px;
+    /*font-weight: 800 !important;*/
+    font-size: 40px;
+    margin-bottom: 20px;
 }
 .form-h4{
 	margin-top: 20px;
+}
+
+button.university {
+    padding: 10px;
 }
 
 /* Optimized Table */

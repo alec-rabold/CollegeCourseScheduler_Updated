@@ -3,17 +3,15 @@ package io.collegeplanner.my.collegecoursescheduler.service.scraper;
 import com.google.common.collect.ImmutableList;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.FormParametersDto;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.UserOptionsDto;
-import io.collegeplanner.my.collegecoursescheduler.service.scraper.impl.UcsbScraper;
-import io.collegeplanner.my.collegecoursescheduler.service.scraper.impl.UwScraper;
 import io.collegeplanner.my.collegecoursescheduler.service.scraper.impl.BerkeleyScraper;
 import io.collegeplanner.my.collegecoursescheduler.service.scraper.impl.SdsuScraper;
+import io.collegeplanner.my.collegecoursescheduler.service.scraper.impl.UcsbScraper;
+import io.collegeplanner.my.collegecoursescheduler.service.scraper.impl.UwScraper;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.Arrays;
 
 import static io.collegeplanner.my.collegecoursescheduler.util.Constants.*;
-import static io.collegeplanner.my.collegecoursescheduler.util.Constants.NUM_OF_WEEKDAYS;
-import static io.collegeplanner.my.collegecoursescheduler.util.Constants.SELECTED_BY_USER;
 
 @Log4j2
 public final class ScraperFactory {
@@ -103,7 +101,7 @@ public final class ScraperFactory {
                         .showOnlineClasses(Boolean.valueOf(params.getDoShowOnline()))
                         .build());
         scraper.setMobileBrowser(params.isMobileBrowser());
-        scraper.setTerm(params.getSeason(), params.getYear());
+        scraper.setTermParameter(params.getSeason(), params.getYear());
         return scraper;
     }
 

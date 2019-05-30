@@ -1,8 +1,8 @@
 package io.collegeplanner.my.collegecoursescheduler.service.scraper.impl;
 
 import io.collegeplanner.my.collegecoursescheduler.model.dto.CourseSectionDto;
-import io.collegeplanner.my.collegecoursescheduler.util.ChainedParserMetadata;
 import io.collegeplanner.my.collegecoursescheduler.service.scraper.GenericScraper;
+import io.collegeplanner.my.collegecoursescheduler.util.ChainedParserMetadata;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 
@@ -105,7 +105,7 @@ public class UwScraper extends GenericScraper {
                         indexForHyphen++;
                     }
                     hyphenatedValue.insert(indexForHyphen, "-");
-                    // courseID (hyphenated): "CSE-143"
+                    // course (hyphenated): "CSE-143"
                     courseID = hyphenatedValue.toString();
 
                     // If this class is one the user chose, then keep processing. Else continue searching
@@ -134,7 +134,7 @@ public class UwScraper extends GenericScraper {
 
             }
 
-            newCourse.setCourseID(courseBundleID + " (LEC)");
+            newCourse.setCourse(courseBundleID + " (LEC)");
 
             /** === Course Title === */
             newCourse.setTitle(courseBundleTitle);
@@ -164,19 +164,19 @@ public class UwScraper extends GenericScraper {
                     // TODO: maybe I should put this at the bottom for better readability.. would that work?
                     if (newCourse.isComplete()) {
                         // If the map doesn't already contain an array list for this class, make a new list
-                        if (!courseMap.containsKey(newCourse.getCourseID())) {
-                            courseMap.put(newCourse.getCourseID(), new ArrayList<>());
+                        if (!courseMap.containsKey(newCourse.getCourse())) {
+                            courseMap.put(newCourse.getCourse(), new ArrayList<>());
                         }
                         // Add course to the hash map
-                        courseMap.get(newCourse.getCourseID()).add(newCourse);
+                        courseMap.get(newCourse.getCourse()).add(newCourse);
                     }
                      */
 
                     newCourse = new CourseSectionDto();
                     // We're still in the same "bundle" of classes, so this next class will share the previous title
                     newCourse.setTitle(courseBundleTitle);
-                    // Same as reasoning above, the courseID (e.g. "CSE-143") stays the same in each "bundle"
-                    newCourse.setCourseID(courseBundleID);
+                    // Same as reasoning above, the course (e.g. "CSE-143") stays the same in each "bundle"
+                    newCourse.setCourse(courseBundleID);
                 }
                 else if((inputLine = in.readLine()).contains(UW_BUNDLE_ID_MARKER)){
                     sameCourseDiffBlock = false;
@@ -205,7 +205,7 @@ public class UwScraper extends GenericScraper {
                 ChainedParserMetadata chainedParser;
 
                 /** Find schedule number (same process as above; doesn't use chainedParser) */
-                newCourse.setScheduleNum(
+                newCourse.setSchedNum(
                         parseData(UW_SCHEDULE_NUM_PARSER_START, UW_SCHEDULE_NUM_PARSER_START.length(),
                                 UW_SCHEDULE_NUM_PARSER_END, inputLine)
                             .getData()
@@ -254,7 +254,7 @@ public class UwScraper extends GenericScraper {
                     log.fatal("Error retrieving/parsing time: \n\t" +
                             "Department:" + department + "\n\t" +
                             "CourseBundle ID: " + courseBundleID + "\n\t" +
-                            "ScheduleDto Number: " + newCourse.getScheduleNum() + "\n\t" +
+                            "ScheduleDto Number: " + newCourse.getSchedNum() + "\n\t" +
                             "Input line: " + inputLine, e);
                 }
 
@@ -316,7 +316,7 @@ public class UwScraper extends GenericScraper {
                     sameCourseDiffBlock = true;
                     firstClassInBundle = true;
                     // Mark this course as a lecture
-                    newCourse.setCourseID(newCourse.getCourseID() + " (LEC)");
+                    newCourse.setCourse(newCourse.getCourse() + " (LEC)");
                     // TODO: can I take out related course and just set it directly?
                     parentCourse = newCourse;
                     // Continue to next line and look for next section
@@ -325,7 +325,7 @@ public class UwScraper extends GenericScraper {
                 } else {
                     // Now that we reach here, the next class is not the first class (therefore set boolean to false)
                     firstClassInBundle = false;
-                    newCourse.setCourseID(newCourse.getCourseID() + " (SEC)");
+                    newCourse.setCourse(newCourse.getCourse() + " (SEC)");
                 }
 
                if(!firstClassInBundle) {
@@ -339,11 +339,11 @@ public class UwScraper extends GenericScraper {
                 // TODO: maybe I should put this at the bottom for better readability.. would that work?
                 if (newCourse.isComplete()) {
                     // If the map doesn't already contain an array list for this class, make a new list
-                    if (!courseMap.containsKey(newCourse.getCourseID())) {
-                        courseMap.put(newCourse.getCourseID(), new ArrayList<>());
+                    if (!courseMap.containsKey(newCourse.getCourse())) {
+                        courseMap.put(newCourse.getCourse(), new ArrayList<>());
                     }
                     // Add course to the hash map
-                    courseMap.get(newCourse.getCourseID()).add(newCourse);
+                    courseMap.get(newCourse.getCourse()).add(newCourse);
                 }
 
                 // Read next line to decide what action to take

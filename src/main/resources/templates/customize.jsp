@@ -8,7 +8,7 @@
 <!----------- FORM--------------->
 <form id="preferences-form" method="POST" action="${requestScope['javax.servlet.forward.servlet_path']}${Constants.RESULTS_PERMUTATIONS_RELATIVE_PATH}">
     <div class="block-area">
-        <h2 class="form" style="margin-bottom: 0px">Step 2: Enter your classes</h2>
+        <h2 class="form bold" style="margin-bottom: 0px">Step 2: Enter your classes</h2>
     </div>
     <!-- Term -->
     <div class="block-area">
@@ -19,15 +19,15 @@
                     <select name="season" class="form-control">
                     <c:choose>
                         <c:when test="${collegeName == Constants.UNIVERSITY_OF_WASHINGTON}">
-                            <option>Fall</option>
-                            <option selected="selected">Winter</option>
+                            <option selected="selected">Fall</option>
+                            <option>Winter</option>
                             <option>Spring</option>
                             <option>Summer</option>
                         </c:when>
                         <c:otherwise>
-                            <option>Fall</option>
+                            <option selected="selected">Fall</option>
                             <option>Winter</option>
-                            <option selected="selected">Spring</option>
+                            <option>Spring</option>
                             <option>Summer</option>
                         </c:otherwise>
                     </c:choose>
@@ -69,7 +69,7 @@
     <!-- /Needed classes -->
 
     <div class="block-area">
-        <h2  class="form">Step 3: Enter your preferences</h2>
+        <h2 class="form bold">Step 3: Choose your preferences</h2>
         <!-- Unavailable -->
         <div id="appendage" data-count="1">
             <div id="timeConflicts">
@@ -140,7 +140,7 @@
     <!-- Preferred professors -->
     <div class="block-area">
         <div id="wantedProfessors" class="professorsDB">
-            <h4 class="form-h4">Prioritize your preferred professors:</h4>
+            <h4 class="form-h4">Prioritize (preferred) professors:</h4>
             <div class="row">
                 <div class="col-xs-12 col-md-9">
                     <select id="wantedProfs" name="wantedProfessors" data-native-menu="false"  data-placeholder="Search and select wanted professors..." class="tag-select" multiple>
@@ -156,7 +156,7 @@
     <!-- Unwanted professors -->
     <div class="block-area">
         <div id="unwantedProfessors" class="professorsDB">
-            <h4 class="form-h4">De-prioritize unwanted professors:</h4>
+            <h4 class="form-h4">De-prioritize (unwanted) professors:</h4>
             <div class="row">
                 <div class="col-xs-12 col-md-9">
                     <select id="unwantedProfs" name="unwantedProfessors" data-native-menu="false"  data-placeholder="Search and select unwanted professors..." class="tag-select" multiple>
@@ -272,6 +272,26 @@
                     <div class="col-xs-0 col-md-3"></div>
                 </div>
             </div>
+            <div id="api-sel" class="col-xs-12 col-md-5">
+                <h4 class="form-h4"><span class="text-red">* </span>Preview the experimental API?</h4>
+                <div class="row">
+                    <div class="col-xs-12 col-md-9">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="doApi" value="true" required>
+                                Yes
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="doApi" checked="checked" value="false">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-0 col-md-3"></div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div id="problems-form" class="col-xs-12 col-md-4">
@@ -305,7 +325,7 @@
     <!-- /Determine if mobile -->
 
     <div class="col-xs-12 col-md-8 p-l-20 p-r-15 m-t-15">
-        <button id="submit-preferences" class="btn btn-block btn-alt m-b-20" type="submit">Save and continue</button>
+        <button id="submit-preferences" class="btn btn-block btn-alt m-b-20" type="submit">Submit!</button>
     </div>
 </form>
 

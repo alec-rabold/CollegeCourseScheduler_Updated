@@ -53,7 +53,7 @@ public class SdsuScraper extends GenericScraper {
         CourseSectionDto temp = new CourseSectionDto();
 
         // Parse HTML
-        try(BufferedReader in = new BufferedReader(new InputStreamReader(getRegistration_URL().openStream()))) {
+        try(final BufferedReader in = new BufferedReader(new InputStreamReader(getRegistration_URL().openStream()))) {
             String inputLine, value;
 
             while((inputLine = in.readLine()) != null) {
@@ -76,7 +76,7 @@ public class SdsuScraper extends GenericScraper {
 
                     // Check if this course is a chosen course
                     if(super.getUserOptions().getChosenCourseNames().contains(value))
-                        temp.setCourseID(value);
+                        temp.setCourse(value);
                     else {
                         continue;
                     }
@@ -86,7 +86,7 @@ public class SdsuScraper extends GenericScraper {
                 else if(inputLine.contains("sectionFieldSched")) {
                     value = parseSection(inputLine);
                     if(!value.equals("Sched #") && (value.matches(".*\\d+.*") || value.contains("***")))
-                        temp.setScheduleNum(value);
+                        temp.setSchedNum(value);
                 }
 
                 /** Course title  */
@@ -190,6 +190,7 @@ public class SdsuScraper extends GenericScraper {
             log.error("Error in parsing data for SDSU", e);
             System.out.println("NullPointerException");
         }
+
     }
 
     /** Sets the department URL to parse */
@@ -256,7 +257,7 @@ public class SdsuScraper extends GenericScraper {
                     List<CourseSectionDto> departmentCourses = departments.get(dept);
                     for(int j = 0; j < departmentCourses.size(); j++) {
                         CourseSectionDto entry = departmentCourses.get(j);
-                        if(tCourse.equals(entry.getCourseID())) tList.add(entry);
+                        if(tCourse.equals(entry.getCourse())) tList.add(entry);
                     }
                 }
             }

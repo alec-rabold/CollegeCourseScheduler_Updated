@@ -1,10 +1,8 @@
 package io.collegeplanner.my.collegecoursescheduler.model.schema;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class ProfessorsDto {
     private String name;
     private String value;

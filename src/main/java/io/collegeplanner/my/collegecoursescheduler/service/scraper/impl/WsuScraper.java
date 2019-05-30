@@ -1,8 +1,8 @@
 package io.collegeplanner.my.collegecoursescheduler.service.scraper.impl;
 
 import io.collegeplanner.my.collegecoursescheduler.model.dto.CourseSectionDto;
-import io.collegeplanner.my.collegecoursescheduler.util.ChainedParserMetadata;
 import io.collegeplanner.my.collegecoursescheduler.service.scraper.GenericScraper;
+import io.collegeplanner.my.collegecoursescheduler.util.ChainedParserMetadata;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 
@@ -126,7 +126,7 @@ public class WsuScraper extends GenericScraper {
 
 //            }
 
-            newCourse.setCourseID(courseBundleID);
+            newCourse.setCourse(courseBundleID);
 
             /** === Course Title === */
             newCourse.setTitle(courseBundleTitle);
@@ -147,8 +147,8 @@ public class WsuScraper extends GenericScraper {
                     newCourse = new CourseSectionDto();
                     // We're still in the same "bundle" of classes, so this next class will share the previous title
                     newCourse.setTitle(courseBundleTitle);
-                    // Same as reasoning above, the courseID (e.g. "CSE-143") stays the same in each "bundle"
-                    newCourse.setCourseID(courseBundleID);
+                    // Same as reasoning above, the course (e.g. "CSE-143") stays the same in each "bundle"
+                    newCourse.setCourse(courseBundleID);
                 }
                 // If it's NOT a section inputLine, then search for next section
                 else if(!inputLine.contains(WSU_COURSE_TITLE_MARKER)) {
@@ -169,7 +169,7 @@ public class WsuScraper extends GenericScraper {
 //
 //                /** Find schedule number */
 //                while(!inputLine.contains(WSU_SCHEDULE_NUMBER_MARKER)) inputLine = in.readLine();
-//                newCourse.setScheduleNum(
+//                newCourse.setSchedNum(
 //                    parseData(WSU_SCHEDULE_NUM_MARKER_START, WSU_SCHEDULE_NUM_MARKER_START.length(),
 //                                WSU_SCHEDULE_NUM_MARKER_END, inputLine)
 //                            .getData()
@@ -218,7 +218,7 @@ public class WsuScraper extends GenericScraper {
 //                    log.fatal("Error retrieving/parsing time: \n\t" +
 //                            "Department:" + department + "\n\t" +
 //                            "CourseBundle ID: " + courseBundleID + "\n\t" +
-//                            "ScheduleDto Number: " + newCourse.getScheduleNum() + "\n\t" +
+//                            "ScheduleDto Number: " + newCourse.getSchedNum() + "\n\t" +
 //                            "Input line: " + inputLine, e);
 //                }
 //
@@ -253,11 +253,11 @@ public class WsuScraper extends GenericScraper {
                 // TODO: maybe I should put this at the bottom for better readability.. would that work?
                 if (newCourse.isComplete()) {
                     // If the map doesn't already contain an array list for this class, make a new list
-                    if (!courseMap.containsKey(newCourse.getCourseID())) {
-                        courseMap.put(newCourse.getCourseID(), new ArrayList<>());
+                    if (!courseMap.containsKey(newCourse.getCourse())) {
+                        courseMap.put(newCourse.getCourse(), new ArrayList<>());
                     }
                     // Add course to the hash map
-                    courseMap.get(newCourse.getCourseID()).add(newCourse);
+                    courseMap.get(newCourse.getCourse()).add(newCourse);
                 }
 
                 // Read next line to decide what action to take

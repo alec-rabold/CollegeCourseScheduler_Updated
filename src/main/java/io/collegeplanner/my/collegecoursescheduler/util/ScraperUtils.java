@@ -14,7 +14,7 @@ public class ScraperUtils {
         for(final String courseName : chosenCourseNames) {
             for(final List<CourseSectionDto> courseList : parsedCourses) {
                 // Each courseIdentifier in courseList is the same, so just get the first
-                final String courseIdentifier = courseList.get(0).getCourseID();
+                final String courseIdentifier = courseList.get(0).getCourse();
                 if(courseIdentifier.contains(courseName)) {
                     continue nextCourse;
                 }
@@ -29,7 +29,7 @@ public class ScraperUtils {
 
         for(final List<CourseSectionDto> courseList : parsedCourses) {
             // Each courseIdentifier in courseList is the same, so just get the first
-            final String courseIdentifier = courseList.get(0).getCourseID();
+            final String courseIdentifier = courseList.get(0).getCourse();
             if(!foundAvailableCourses.contains(courseIdentifier)) {
                 waitlistedClasses.add(courseIdentifier);
             }

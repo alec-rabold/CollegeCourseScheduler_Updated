@@ -139,8 +139,8 @@ public class UcsbScraper extends GenericScraper {
                 courseBundleTitle = courseTitle;
 
                 newCourse.setTitle(courseBundleTitle);
-                newCourse.setCourseID(courseBundleID + " (LEC)");
-                newCourse.setScheduleNum("[LECTURE]");
+                newCourse.setCourse(courseBundleID + " (LEC)");
+                newCourse.setSchedNum("[LECTURE]");
             }
             else {
                 continue nextInput; // not the right bundle of courses
@@ -159,14 +159,14 @@ public class UcsbScraper extends GenericScraper {
                         newCourse.setParentCourse(parentCourse);
 
                     if(newCourse.isComplete()) {
-                        if (!courseMap.containsKey(newCourse.getCourseID()))
-                            courseMap.put(newCourse.getCourseID(), new ArrayList<>());
-                        courseMap.get(newCourse.getCourseID()).add(newCourse);
+                        if (!courseMap.containsKey(newCourse.getCourse()))
+                            courseMap.put(newCourse.getCourse(), new ArrayList<>());
+                        courseMap.get(newCourse.getCourse()).add(newCourse);
                     }
 
                     newCourse = new CourseSectionDto();
                     newCourse.setTitle(courseBundleTitle);
-                    newCourse.setCourseID(courseBundleID);
+                    newCourse.setCourse(courseBundleID);
                     shadowBottomCount = 0;
                     firstClassInBundle = false;
 
@@ -191,7 +191,7 @@ public class UcsbScraper extends GenericScraper {
                     int end = inputLine.indexOf("</a>");
                     String enrollCode = inputLine.substring(start, end).trim();
                     if(enrollCode.length() > 2)
-                        newCourse.setScheduleNum(enrollCode);
+                        newCourse.setSchedNum(enrollCode);
 
                     while(shadowBottomCount != 1) {
                         inputLine = in.readLine();

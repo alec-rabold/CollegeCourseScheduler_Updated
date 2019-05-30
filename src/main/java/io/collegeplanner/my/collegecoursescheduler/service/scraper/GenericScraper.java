@@ -1,9 +1,9 @@
 package io.collegeplanner.my.collegecoursescheduler.service.scraper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.collegeplanner.my.collegecoursescheduler.model.dto.ScheduleDto;
-import io.collegeplanner.my.collegecoursescheduler.model.dto.PermutationsJobResultsDto;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.CourseSectionDto;
+import io.collegeplanner.my.collegecoursescheduler.model.dto.PermutationsJobResultsDto;
+import io.collegeplanner.my.collegecoursescheduler.model.dto.ScheduleDto;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.UserOptionsDto;
 import io.collegeplanner.my.collegecoursescheduler.util.GenericUtils;
 import io.collegeplanner.my.collegecoursescheduler.util.ScheduleBuilderUtils;
@@ -59,6 +59,8 @@ public abstract class GenericScraper {
     private Set<String> foundAvailableCourses = new HashSet<>();
     private List<List<CourseSectionDto>> sizeSortedCourses = new ArrayList<>();
     private Map<Integer, List<CourseSectionDto>> countIndexedCourses = new TreeMap<>();
+
+    private String timeToRetrieveCourseData;
 
     public abstract String getUniversityName();
 
@@ -243,7 +245,7 @@ public abstract class GenericScraper {
                         } else {
                             // This is used in letting the user know which classes have no available non-waitlisted sessions
                             //    during the selected term (as a reminder / heads-up)
-                            foundAvailableCourses.add(crs.getCourseID());
+                            foundAvailableCourses.add(crs.getCourse());
                         }
                     }
                 }
@@ -332,7 +334,7 @@ public abstract class GenericScraper {
 
                 final long[] schedLayout = calculateScheduleLayout(currentSchedule);
 
-                final ScheduleDto sched = new ScheduleDto(currentSchedule, numWanted, numUnwanted, scheduleDistance, numDays, schedLayout); //allows algorithm to update before adding to PQ
+                final ScheduleDto sched = new ScheduleDto(currentSchedule, numWanted, numUnwanted, scheduleDistance, numDays, schedLayout, this.userOptions); //allows algorithm to update before adding to PQ
                 validSchedules.add(sched);
                 this.numValidSchedules++;
 
@@ -362,7 +364,6 @@ public abstract class GenericScraper {
                         }
                     }
                 }
-
                 // Keep the number of schedules equal to 25 (or less)
                 if (validSchedules.size() > 25) {
                     validSchedules.poll();
@@ -371,6 +372,8 @@ public abstract class GenericScraper {
             if(response != null) {
                 printTables(validSchedules, request, response, false);
             }
+
+
             results.setResultCode(RESULT_CODE_OK);
 
         }
@@ -380,36 +383,49 @@ public abstract class GenericScraper {
 
         }
         finally {
+            // How could I do this with Stream API
+            final ScheduleDto[] schedulesArray = new ScheduleDto[validSchedules.size()];
+            for(int i = 0; i < schedulesArray.length; i++) {
+                schedulesArray[i] = validSchedules.poll();
+                schedulesArray[i].setScheduleRank(i + 1);
+            }
+            final Set<ScheduleDto> orderedSchedules = new TreeSet<>(Arrays.asList(schedulesArray));
 
-            final Set<String> userCourseSelection = this.userOptions.getChosenCourseNames()
-                    .stream().collect(Collectors.collectingAndThen(Collectors.toSet(),
-                            Collections::unmodifiableSet));
-            final Set<ScheduleDto> orderedSchedules = validSchedules
-                    .stream().collect(Collectors.collectingAndThen(Collectors.toSet(),
-                            Collections::unmodifiableSet));
+            final int numValidSchedulesToReturn = this.numValidSchedules < 25 ? (int) this.numValidSchedules : 25;
+//            final Set<String> userCourseSelection = this.userOptions.getChosenCourseNames()
+//                    .stream().collect(Collectors.collectingAndThen(Collectors.toSet(),
+//                            Collections::unmodifiableSet));
+//            final int[] index = {1};
+//            validSchedules.forEach(x -> x.setScheduleRank(index[0]++));
+//            final Set<ScheduleDto> orderedSchedules = Arrays.stream(schedulesArray)
+//                    //.sorted(Comparator.comparingInt(ScheduleDto::getScheduleRank))
+//                    .collect(Collectors.collectingAndThen(Collectors.toSet(),
+//                            Collections::unmodifiableSet));
             final Set<String> coursesWithAllSectionsWaitlisted = ScraperUtils.getCoursesWithAllSectionsWaitlisted(this.foundAvailableCourses, this.sizeSortedCourses)
                     .stream().collect(Collectors.collectingAndThen(Collectors.toSet(),
                             Collections::unmodifiableSet));
             final Set<String> coursesWithNoSectionsOffered = ScraperUtils.getCoursesWithNoSectionsOffered(this.userOptions.getChosenCourseNames(), this.sizeSortedCourses)
                     .stream().collect(Collectors.collectingAndThen(Collectors.toSet(),
                             Collections::unmodifiableSet));
-            final String elapsedTime = GenericUtils.getFormattedElapsedTime(timeStartForPermutations);
+            final String timeToCompletePermutations = GenericUtils.getFormattedElapsedTime(timeStartForPermutations);
 
 
-            results.setUserCourseSelection(userCourseSelection);
-            results.setTopRankedValidSchedules(orderedSchedules);
-            results.setCompletionTime(elapsedTime);
-            results.setValidSchedulesCount(this.numValidSchedules);
-            results.setPerformedPermutationsCount(this.numPermutations);
-            results.setInvalidSchedulesCount(this.numPermutations - this.numValidSchedules);
-            results.setTheoreticalPermutationsCount(ScraperUtils.getNumTheoreticalPermutations(this.sizeSortedCourses));
-            results.setCoursesWithAllSectionsFull(coursesWithAllSectionsWaitlisted);
-            results.setCoursesWithNoSectionsOffered(coursesWithNoSectionsOffered);
+//            results.setCourseNamesSelected(userCourseSelection);
+            results.setNumSchedulesReturned(numValidSchedulesToReturn);
+            results.setTimeToRetrieveCourseData(this.timeToRetrieveCourseData + SECONDS_ABBR);
+            results.setTimeToCompletePermutations(timeToCompletePermutations + SECONDS_ABBR);
+            results.setRankedValidSchedules(orderedSchedules);
+            results.setNumTotalValidSchedules(this.numValidSchedules);
+            results.setNumPermutationsPerformed(this.numPermutations);
+            results.setNumTotalInvalidSchedules(this.numPermutations - this.numValidSchedules);
+            results.setNumTheoreticalPermutations(ScraperUtils.getNumTheoreticalPermutations(this.sizeSortedCourses));
+            results.setCoursesWithAllSectionsWaitlisted(coursesWithAllSectionsWaitlisted);
+            results.setCoursesWithNoSectionsOfferedForTerm(coursesWithNoSectionsOffered);
 
             final String chosenCoursesByUser = "[" + String.join(", ", userOptions.getChosenCourseNames()) + "]";
             log.info(String.format(
                 "[%s] Analyze job took %s seconds to finish %,d permutations.",
-                    this.getUniversityName(), elapsedTime, getNumPermutations())
+                    this.getUniversityName(), timeToCompletePermutations, getNumPermutations())
                 + "\t Course Selection: " + chosenCoursesByUser
             );
         }
@@ -431,7 +447,9 @@ public abstract class GenericScraper {
 
             final List<List<CourseSectionDto>> correctOrder = new ArrayList<>();
             for (int i = size - 1; i >= 0; i--) {
-                correctOrder.add(0, validSchedules.poll().getCourseSectionsInSchedule());
+                final ScheduleDto schedule = validSchedules.poll();
+                schedule.setScheduleRank(i + 1); // not zero-indexed
+                correctOrder.add(0, schedule.getCourseSectionsInSchedule());
             }
 
             /** Tables header */
@@ -567,9 +585,9 @@ public abstract class GenericScraper {
                                 }
                                 if ((classDays[day] == 1) && (string_of_i.equals(course_time.substring(0, course_time.indexOf("-"))))) {
                                     final int rowSpan = calculateRowspan(course, j);
-                                    final String uniqueIdentifier = (course.getScheduleNum().contains("***")) ?
-                                            removeIllegalChars(course.getCourseID() + "noSchedNum") :
-                                            removeIllegalChars(course.getCourseID() + "_" + course.getScheduleNum());
+                                    final String uniqueIdentifier = (course.getSchedNum().contains("***")) ?
+                                            removeIllegalChars(course.getCourse() + "noSchedNum") :
+                                            removeIllegalChars(course.getCourse() + "_" + course.getSchedNum());
                                     out.print("<td rowspan='" + rowSpan + "' class='tableCourse opt-class-" + ScheduleBuilderUtils.getCourseColor(course.getTitle(), courseColors));
                                     out.print(" " + uniqueIdentifier + "_" + j + "h'");
                                     if (bottomBorder) {
@@ -577,7 +595,7 @@ public abstract class GenericScraper {
                                     }
                                     out.print(" data-toggle='modal' data-courseid='" + uniqueIdentifier + "_" + j + "' data-target='#tableModal'");
                                     out.println(">");
-                                    out.println("<p id='courseID'><b>" + course.getCourseID().toUpperCase() + "</b></p>");
+                                    out.println("<p id='course'><b>" + course.getCourse().toUpperCase() + "</b></p>");
                                     out.print("<div ");
                                     // indented for ease of visualization
                                     if (isMobileBrowser) {
@@ -602,7 +620,7 @@ public abstract class GenericScraper {
                                     out.print("</i></p>");
                                     out.println("<p id='instructors'>" + course_instructor + "</p>");
                                     out.println("<p id='times'>" + time24to12(course_time) + "</p>");
-                                    out.println("<p id='schedNum'>Schedule #: " + course.getScheduleNum() + "</p>");
+                                    out.println("<p id='schedNum'>Schedule #: " + course.getSchedNum() + "</p>");
                                     out.println("</div>");
 
                                     /** Modal data (hidden) */
@@ -613,7 +631,7 @@ public abstract class GenericScraper {
                                     out.println("<p id='instructors'>" + course_instructor + "</p>");
                                     out.println("<p id='times'>" + time24to12(course_time) + "</p>");
                                     out.println("<p id='location'>" + course_location + "</p>");
-                                    out.println("<p id='schedNum'>Schedule #: " + course.getScheduleNum() + "</p>");
+                                    out.println("<p id='schedNum'>Schedule #: " + course.getSchedNum() + "</p>");
                                     if(course.getSeats() != null) {
                                         out.print("<p id='seats'");
                                         // Check if waitlisted; if so red text
