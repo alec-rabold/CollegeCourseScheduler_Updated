@@ -343,7 +343,6 @@ h4.fewClasses {
     width: 30px;
     text-align: right;
     padding-right: 10px;
-    cursor: hover;
 }
 
 .drawer-close:hover {
@@ -2382,7 +2381,7 @@ button.university {
     margin: 0 auto;
 }
 #optimized-table td{
-	border-right: 2px solid black; */
+	border-right: 2px solid black;
 	text-align: left;
 }
 #optimized-table td{
