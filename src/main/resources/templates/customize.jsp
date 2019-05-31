@@ -294,16 +294,20 @@
             </div>
         </div>
         <div class="row">
-            <div id="problems-form" class="col-xs-12 col-md-4">
+            <div id="problems-form" class="feedback-box col-xs-12 col-md-4">
                 <h4 class="form-h4"><span class="text-red"></span>Found a bug?</h4>
-                    <div class="col-xs-12" style="padding-top: 10px">
-                        <textarea name="problemsTextbox" class="form-control textarea-autosize" placeholder="Let us know here..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea>
+                    <div class="feedback-box col-xs-12" style="padding-top: 10px">
+                        <!--textarea name="problemsTextbox" class="form-control textarea-autosize" placeholder="Let us know here..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea-->
+                        <textarea id="bug-text" class="form-control textarea-autosize" placeholder="Let us know here..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea>
+                        <button id="bug-button" class="btn-absolute btn-alt">Submit</button>
                     </div>
             </div>
-            <div id="suggestions-form" class="col-xs-12 col-md-4 col-md-offset-1">
+            <div id="suggestions-form" class="feedback-box col-xs-12 col-md-4 col-md-offset-1">
                 <h4 class="form-h4"><span class="text-red"></span>Any suggestions for us?</h4>
-                <div class="col-xs-12" style="padding-top: 10px">
-                    <textarea name="suggestionsTextbox" class="form-control textarea-autosize" placeholder="Tell us what we can improve..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea>
+                <div class="feedback-box col-xs-12" style="padding-top: 10px">
+                    <!--textarea name="suggestionsTextbox" class="form-control textarea-autosize" placeholder="Tell us what we can improve..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea-->
+                    <textarea id="suggestion-text" class="form-control textarea-autosize" placeholder="Tell us what we can improve..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea>
+                    <button id="suggestion-button" class="btn-absolute btn-alt">Submit</button>
                 </div>
             </div>
         </div>

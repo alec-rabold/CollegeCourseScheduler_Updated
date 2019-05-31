@@ -3,6 +3,7 @@ package io.collegeplanner.my.collegecoursescheduler.repository.scrapers.ellucian
 import io.collegeplanner.my.collegecoursescheduler.repository.RegistrationDataDao;
 import io.collegeplanner.my.collegecoursescheduler.repository.scrapers.ellucian.EllucianDataScraper;
 import io.collegeplanner.my.collegecoursescheduler.util.ChainedParserMetadata;
+import io.collegeplanner.my.collegecoursescheduler.util.DatabaseUtils;
 import io.collegeplanner.my.collegecoursescheduler.util.ScraperUtils;
 import lombok.extern.log4j.Log4j2;
 import org.jdbi.v3.core.Jdbi;
@@ -25,7 +26,7 @@ public class CourseScraper extends EllucianDataScraper {
 
         coursesMap.forEach((key, value) -> System.out.println(key + ", " + value));
 
-        final Jdbi jdbi = EllucianDataScraper.getDatabaseConnection();
+        final Jdbi jdbi = DatabaseUtils.getDatabaseConnection();
         final String tableName = COURSES_TABLE_PREFIX + college;
         jdbi.onDemand(RegistrationDataDao.class).createCoursesTableIfNotExists(tableName);
         jdbi.onDemand(RegistrationDataDao.class).updateCoursesTableBulk(tableName,

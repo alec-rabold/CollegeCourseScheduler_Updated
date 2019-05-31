@@ -3,13 +3,16 @@ package io.collegeplanner.my.collegecoursescheduler.repository.scrapers.ellucian
 import com.google.common.collect.ImmutableSet;
 import io.collegeplanner.my.collegecoursescheduler.repository.RegistrationDataDao;
 import io.collegeplanner.my.collegecoursescheduler.repository.scrapers.ellucian.EllucianDataScraper;
+import io.collegeplanner.my.collegecoursescheduler.util.DatabaseUtils;
 import io.collegeplanner.my.collegecoursescheduler.util.ScraperUtils;
 import lombok.extern.log4j.Log4j2;
 import org.jdbi.v3.core.Jdbi;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import static io.collegeplanner.my.collegecoursescheduler.util.Constants.*;
 
@@ -22,7 +25,7 @@ public class SubjectScraper extends EllucianDataScraper {
         final String baseDataPage = ELLUCIAN_UNIVERSITIES_SS_DATA_PAGES.get(college);
         final Map<String, String> subjectsMap = getSubjects(baseDataPage, termIds);
 
-        final Jdbi jdbi = EllucianDataScraper.getDatabaseConnection();
+        final Jdbi jdbi = DatabaseUtils.getDatabaseConnection();
         final String tableName = SUBJECTS_TABLE_PREFIX + college;
         jdbi.onDemand(RegistrationDataDao.class).createSubjectsTableIfNotExists(tableName);
         jdbi.onDemand(RegistrationDataDao.class).updateSubjectsTableBulk(tableName,

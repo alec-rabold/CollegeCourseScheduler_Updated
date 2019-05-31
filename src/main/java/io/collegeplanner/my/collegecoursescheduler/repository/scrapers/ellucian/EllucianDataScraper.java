@@ -1,11 +1,8 @@
 package io.collegeplanner.my.collegecoursescheduler.repository.scrapers.ellucian;
 
-import io.collegeplanner.my.collegecoursescheduler.DatabaseConnection;
 import io.collegeplanner.my.collegecoursescheduler.util.ScraperUtils;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
-import org.jdbi.v3.core.Jdbi;
-import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,10 +19,6 @@ import static io.collegeplanner.my.collegecoursescheduler.util.Constants.*;
 public abstract class EllucianDataScraper {
 
     public abstract void scrapeAndPersistDataForCollege(final String college, final Set<String> termIds) throws IOException;
-
-    public static Jdbi getDatabaseConnection() {
-        return DatabaseConnection.getDatabaseConnection().installPlugin(new SqlObjectPlugin());
-    }
 
     public static Set<String> getMostRecentTermIds(final int numTerms, final String baseDataPage) throws IOException {
         final Set<String> res = new HashSet<>();

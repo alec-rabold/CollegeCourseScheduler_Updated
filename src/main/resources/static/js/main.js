@@ -23,6 +23,30 @@ $(document).ready(function() {
     });
 
 
+    $('#bug-button').on('click', function () {
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/submit-bug',
+            data: {
+                userInput: $("#bug-text").val()
+            },
+            dataType : 'json'
+        });
+    });
+
+    $('#suggestion-button').on('click', function () {
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/submit-suggestion',
+            data: {
+                userInput: $("#suggestion-text").val()
+            },
+            dataType : 'json'
+        });
+    });
+
+
+
     var isMobile = window.matchMedia("only screen and (max-width: 760px)");
     if (isMobile.matches) {
         $('#preview-sched').addClass('hidden');

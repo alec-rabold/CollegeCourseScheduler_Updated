@@ -309,6 +309,7 @@ public class Constants {
     public static final String PREPARED_QUERY_UPDATE_PROFESSORS_TABLE = "INSERT INTO <table>(p_name, p_value) VALUES (:name, :value) ON DUPLICATE KEY UPDATE p_value = VALUES(p_value)";
     public static final String PREPARED_QUERY_UPDATE_SUBJECTS_TABLE = "INSERT INTO <table>(s_abbr, s_full) VALUES (:subjAbbr, :subjFull) ON DUPLICATE KEY UPDATE s_full = VALUES(s_full)";
     public static final String PREPARED_QUERY_UPDATE_COURSES_TABLE = "INSERT INTO <table>(c_id, c_title) VALUES (:courseId, :title) ON DUPLICATE KEY UPDATE c_title = VALUES(c_title)";
+    public static final String PREPARED_QUERY_UPDATE_FEEDBACK_TABLE = "INSERT INTO <table>(user_input) VALUES (:userInput)";
 
     /** Table Names */
     // Prefixes
@@ -316,6 +317,7 @@ public class Constants {
     public static final String SUBJECTS_TABLE_PREFIX = "subjects_";
     public static final String COURSES_TABLE_PREFIX = "courses_";
     public static final String COURSE_REGISTRATION_DATA_TABLE_PREFIX = "course_registration_data_";
+    public static final String FEEDBACK_TABLE_PREFIX = "feedback_";
 
     // Registration data
     public static final String UW_COURSE_REGISTRATION_DATA_TABLE =
@@ -348,6 +350,10 @@ public class Constants {
             PROFESSORS_TABLE_PREFIX + PURDUE_UNIVERSITY;
     public static final String BROWN_PROFESSORS_TABLE =
             PROFESSORS_TABLE_PREFIX + BROWN_UNIVERSITY;
+
+    // Feedback
+    public static final String FEEDBACK_BUGS_TABLE = FEEDBACK_TABLE_PREFIX + "bugs";
+    public static final String FEEDBACK_SUGGESTIONS_TABLE = FEEDBACK_TABLE_PREFIX + "suggestions";
 
     /** Immutable Collections */
     public static final Set<String> SUPPORTED_ELLUCIAN_COLLEGES = ImmutableSet.of(

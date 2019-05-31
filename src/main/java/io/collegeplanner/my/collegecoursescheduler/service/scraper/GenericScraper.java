@@ -392,15 +392,6 @@ public abstract class GenericScraper {
             final Set<ScheduleDto> orderedSchedules = new TreeSet<>(Arrays.asList(schedulesArray));
 
             final int numValidSchedulesToReturn = this.numValidSchedules < 25 ? (int) this.numValidSchedules : 25;
-//            final Set<String> userCourseSelection = this.userOptions.getChosenCourseNames()
-//                    .stream().collect(Collectors.collectingAndThen(Collectors.toSet(),
-//                            Collections::unmodifiableSet));
-//            final int[] index = {1};
-//            validSchedules.forEach(x -> x.setScheduleRank(index[0]++));
-//            final Set<ScheduleDto> orderedSchedules = Arrays.stream(schedulesArray)
-//                    //.sorted(Comparator.comparingInt(ScheduleDto::getScheduleRank))
-//                    .collect(Collectors.collectingAndThen(Collectors.toSet(),
-//                            Collections::unmodifiableSet));
             final Set<String> coursesWithAllSectionsWaitlisted = ScraperUtils.getCoursesWithAllSectionsWaitlisted(this.foundAvailableCourses, this.sizeSortedCourses)
                     .stream().collect(Collectors.collectingAndThen(Collectors.toSet(),
                             Collections::unmodifiableSet));

@@ -2370,6 +2370,17 @@ button.university {
     padding: 10px;
 }
 
+.feedback-box {
+    padding-right: 0px;
+    padding-top: 10px;
+}
+
+.btn-absolute {
+    position:absolute;
+    bottom: 0px;
+    right: 0px;
+}
+
 /* Optimized Table */
 
 @import url('https://fonts.googleapis.com/css?family=Rokkitt');
