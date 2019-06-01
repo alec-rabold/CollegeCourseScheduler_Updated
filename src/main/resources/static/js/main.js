@@ -24,24 +24,30 @@ $(document).ready(function() {
 
 
     $('#bug-button').on('click', function () {
+        $(this).prop("disabled", true).html('Sending..').addClass("loading");
         $.ajax({
             type: 'POST',
             url: '/ajax/submit-bug',
             data: {
                 userInput: $("#bug-text").val()
             },
-            dataType : 'json'
+            success: function () {
+                $('#bug-button').html('Thanks!').addClass("disabled").prop("disabled", true);
+            }
         });
     });
 
     $('#suggestion-button').on('click', function () {
+        $(this).prop("disabled", true).html('Sending..').addClass("loading");
         $.ajax({
             type: 'POST',
             url: '/ajax/submit-suggestion',
             data: {
                 userInput: $("#suggestion-text").val()
             },
-            dataType : 'json'
+            success: function () {
+                $('#suggestion-button').html('Thanks!').addClass("disabled").prop("disabled", true);
+            }
         });
     });
 

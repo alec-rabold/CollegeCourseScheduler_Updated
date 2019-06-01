@@ -2377,8 +2377,16 @@ button.university {
 
 .btn-absolute {
     position:absolute;
-    bottom: 0px;
-    right: 0px;
+    bottom: 2px;
+    right: 2px;
+}
+
+.btn-absolute.loading {
+    cursor: wait;
+}
+
+.btn-absolute.disabled {
+    cursor: not-allowed;
 }
 
 /* Optimized Table */

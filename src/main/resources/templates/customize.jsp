@@ -299,7 +299,7 @@
                     <div class="feedback-box col-xs-12" style="padding-top: 10px">
                         <!--textarea name="problemsTextbox" class="form-control textarea-autosize" placeholder="Let us know here..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea-->
                         <textarea id="bug-text" class="form-control textarea-autosize" placeholder="Let us know here..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea>
-                        <button id="bug-button" class="btn-absolute btn-alt">Submit</button>
+                        <button id="bug-button" type="button" class="btn-absolute btn-alt">Submit</button>
                     </div>
             </div>
             <div id="suggestions-form" class="feedback-box col-xs-12 col-md-4 col-md-offset-1">
@@ -307,7 +307,7 @@
                 <div class="feedback-box col-xs-12" style="padding-top: 10px">
                     <!--textarea name="suggestionsTextbox" class="form-control textarea-autosize" placeholder="Tell us what we can improve..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea-->
                     <textarea id="suggestion-text" class="form-control textarea-autosize" placeholder="Tell us what we can improve..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea>
-                    <button id="suggestion-button" class="btn-absolute btn-alt">Submit</button>
+                    <button id="suggestion-button" type="button" class="btn-absolute btn-alt">Submit</button>
                 </div>
             </div>
         </div>
