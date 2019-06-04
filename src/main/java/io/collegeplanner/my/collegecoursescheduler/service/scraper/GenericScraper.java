@@ -11,6 +11,7 @@ import io.collegeplanner.my.collegecoursescheduler.util.ScraperUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletException;
@@ -91,10 +92,17 @@ public abstract class GenericScraper {
         final PermutationsJobResultsDto results = new PermutationsJobResultsDto();
 
         // TODO: crude mobile detection.. replace with feature lookbehind
-        if(request.getHeader("User-Agent").contains("Mobile")) {
-            this.setMobileBrowser(true);
-        } else {
-            this.setMobileBrowser(false);
+        try {
+            final String userAgent = request.getHeader("User-Agent");
+            if (StringUtils.isNotEmpty(userAgent)) {
+                if (userAgent.contains("Mobile")) {
+                    this.setMobileBrowser(true);
+                } else {
+                    this.setMobileBrowser(false);
+                }
+            }
+        } catch(final NullPointerException e) {
+            log.debug("No User-Agent header found in request", e);
         }
 
         try {

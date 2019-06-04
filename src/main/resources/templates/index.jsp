@@ -32,7 +32,7 @@
     <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
         <div class="carousel-inner">
             <div class="item active">
-                <table id="optimized-table">
+                <table class="optimized-table">
                     <tbody><tr>
                         <th class="opt-table-label opt-table-time"></th>
                         <th class="opt-table-label">Monday</th>
