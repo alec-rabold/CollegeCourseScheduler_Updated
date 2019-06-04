@@ -272,24 +272,11 @@ public class Constants {
     public static final int RESULT_CODE_INTERNAL_SERVER_ERROR = 500;
     public static final int RESULT_CODE_SERVICE_UNAVAILABLE = 503;
 
-
-
-
-
-
-    // TODO: refactor; legacy
-    /** Names of arrays in request params */
-    public static final String MONDAYS_ARRAY = "mondayChosen";
-    public static final String TUESDAY_ARRAY = "tuesdayChosen";
-    public static final String WEDNESDAY_ARRAY = "wednesdayChosen";
-    public static final String THURSDAY_ARRAY = "thursdayChosen";
-    public static final String FRIDAY_ARRAY = "fridayChosen";
-
     public static final String HEADER_FILE_NAME = "header.jsp";
     public static final String FOOTER_FILE_NAME = "footer.jsp";
 
     public static final int NUM_OF_WEEKDAYS = 5;
-    public static final String SELECTED_BY_USER = "1";
+    public static final String[] WEEKDAY_ABBREVS = {"M","T","W","R","R"};
 
     public static final String REFERER_HEADER = "referer";
 

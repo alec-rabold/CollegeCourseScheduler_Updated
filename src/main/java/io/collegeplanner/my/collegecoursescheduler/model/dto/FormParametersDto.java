@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Wither;
 
-import java.util.List;
-
 @Data
 @Wither
 @Builder
@@ -22,19 +20,12 @@ public class FormParametersDto {
     private String numClassesPerWeekPreference;
     private String problemsTextbox;
     private String suggestionsTextbox;
-    private String[] chosenCourses;
+    private String[] chosenCourse;
     private String[] wantedProfessors;
     private String[] unwantedProfessors;
     private String[] excludedProfessors;
-    private String[] unavailableBlockTimesStart;
-    private String[] unavailableBlockTimesEnd;
-    private List<String[]> daysForUnavailableTimeBlocks;
-    private long[] unavTimesBitBlocks;
+    private String[] unavailableTimeblockStart;
+    private String[] unavailableTimeblockEnd;
+    private String[] unavailableTimeblockDays;
     private boolean isMobileBrowser;
-    // Temporary until better solution
-    private String[] mondaysChosen;
-    private String[] tuesdaysChosen;
-    private String[] wednesdaysChosen;
-    private String[] thursdaysChosen;
-    private String[] fridaysChosen;
 }

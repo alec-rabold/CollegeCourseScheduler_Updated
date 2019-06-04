@@ -6,7 +6,7 @@
 <jsp:include page="header.jsp"/>
 
 <!----------- FORM--------------->
-<form id="preferences-form" method="POST" action="${requestScope['javax.servlet.forward.servlet_path']}${Constants.RESULTS_PERMUTATIONS_RELATIVE_PATH}">
+<form id="preferences-form" method="POST" action="${requestScope['javax.servlet.forward.servlet_path']}${Constants.RESULTS_PERMUTATIONS_RELATIVE_PATH}" novalidate>
     <div class="block-area">
         <h2 class="form bold" style="margin-bottom: 0px">Step 2: Enter your classes</h2>
     </div>
@@ -56,7 +56,7 @@
             <h4 class="form-h4"><span class="text-red">* </span>Select your classes:</h4>
             <div class="row">
                 <div class="col-xs-12 col-md-9">
-                    <select name="chosenCourses" data-placeholder="Select needed classes..." class="tag-select" multiple required>
+                    <select name="chosenCourse" data-placeholder="Select needed classes..." class="tag-select" multiple required>
                         <c:forEach items="${registrationData.coursesMetadata}" var="course">
                             <c:out escapeXml="false" value="<option value='${course.id}'/>${course.name} | ${course.title}"/>
                         </c:forEach>
@@ -79,7 +79,7 @@
                     <div class="col-xs-5 col-md-4 m-b-15">
                         <p>No classes from:</p>
                         <div class="input-icon datetime-pick time-only-12">
-                            <input data-format="hh:mm:ss" name="unavailableBlockTimesStart" value="08:00:00" type="text" class="form-control input-sm" />
+                            <input data-format="hh:mm:ss" name="unavailableTimeblockStart" value="08:00:00" type="text" class="form-control input-sm" />
                             <span class="add-on">
                                 <i class="sa-plus"></i>
                             </span>
@@ -91,7 +91,7 @@
                     <div class="col-xs-5 col-md-4 m-b-15">
                         <p><br></p>
                         <div class="input-icon datetime-pick time-only-12">
-                            <input data-format="hh:mm:00" name="unavailableBlockTimesEnd" placeholder="Select the time you'd be willing to start..." type="text" class="form-control input-sm" />
+                            <input data-format="hh:mm:00" name="unavailableTimeblockEnd" placeholder="Select the time you'd be willing to start..." type="text" class="form-control input-sm" />
                             <span class="add-on">
                                 <i class="sa-plus"></i>
                             </span>
@@ -102,20 +102,21 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-xs-11 col-md-6" style="padding-bottom: 15px;">
+                        <input class="timeblockDays" type="hidden" name="unavailableTimeblockDays"/>
                         <label class="checkbox-inline">
-                            <input class="days" type="checkbox" name="mondaysChosen" value="0"> Mon
+                            <input id="monday_sel" class="days" type="checkbox" value="M"> Mon
                         </label>
                         <label class="checkbox-inline">
-                            <input class="days" type="checkbox" name="tuesdaysChosen" value="0"> Tues
+                            <input id="tuesday_sel" class="days" type="checkbox" value="T"> Tues
                         </label>
                         <label class="checkbox-inline">
-                            <input class="days" type="checkbox" name="wednesdaysChosen" value="0"> Wed
+                            <input id="wendesday_sel" class="days" type="checkbox" value="W"> Wed
                         </label>
                         <label class="checkbox-inline">
-                            <input class="days" type="checkbox" name="thursdaysChosen" value="0"> Thurs
+                            <input id="thursday_sel" class="days" type="checkbox" value="R"> Thurs
                         </label>
                         <label class="checkbox-inline">
-                            <input class="days" type="checkbox" name="fridaysChosen" value="0"> Fri
+                            <input id="friday_sel" class="days" type="checkbox" value="F"> Fri
                         </label>
                     </div>
                     <div class="col-xs-7 col-xs-offset-2 col-md-offset-0 col-md-3 " style="display: none">
@@ -278,13 +279,13 @@
                     <div class="col-xs-12 col-md-9">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="doApi" value="true" required>
+                                <input type="radio" name="api_call" value="true" required>
                                 Yes
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="doApi" checked="checked" value="false">
+                                <input type="radio" name="api_call" checked="checked" value="false">
                                 No
                             </label>
                         </div>

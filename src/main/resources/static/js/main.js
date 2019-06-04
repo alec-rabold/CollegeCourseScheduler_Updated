@@ -5,15 +5,34 @@
  */
 
 // Resets checkboxes on re-load
-$('input.days').val('0').prop('checked', false);
+// $('input.days').val('0').prop('checked', false);
 
 $(document).ready(function() {
 
     $("#submit-preferences").on("click", function(e){
         // Creates array of days
-        $('input.days').prop('checked', true);
+        // $('input.days').prop('checked', true);
 
-        var val = $("input[name='doApi']:checked").val();
+        var daysArray = [];
+        $('input.days').each(function () {
+            if($(this).is(":checked")) {
+                daysArray.push($(this).val());
+            } else {
+                daysArray.push('0'); // acts as a buffer, zeros removed below
+            }
+        })
+
+        var indexStart = 0;
+        var daysPerWeekBuffer = 5;
+
+        $('input.timeblockDays').each(function () {
+            $(this).val(daysArray.slice(indexStart, indexStart + daysPerWeekBuffer).filter(function(elem){
+                return elem !== '0';
+            }).toString());
+            indexStart += daysPerWeekBuffer;
+        });
+
+        var val = $("input[name='api_call']:checked").val();
         if(val === 'true') {
             e.preventDefault();
             var action = $('#preferences-form').attr('action');
@@ -51,8 +70,6 @@ $(document).ready(function() {
         });
     });
 
-
-
     var isMobile = window.matchMedia("only screen and (max-width: 760px)");
     if (isMobile.matches) {
         $('#preview-sched').addClass('hidden');
@@ -66,7 +83,6 @@ $(document).ready(function() {
     $('#wantedProfs, #unwantedProfs, #excludedProfs').append($('#loadedProfessors').children()).trigger('chosen:update');
     $('#loadedProfessors').remove();
 
-    // '.tbl-content' consumed little space for vertical scrollbar, scrollbar width depend on browser/os/platfrom. Here calculate the scollbar width .
     $(window).on("load resize ", function() {
       var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
       $('.tbl-header').css({'padding-right':scrollWidth});
@@ -79,17 +95,11 @@ $(document).ready(function() {
         $('#timeConflicts').clone().attr('id','timeblock-' + numBlock).appendTo('#appendage');
         var elem = "#timeblock-" + numBlock;
         $(elem).find('.btn').data('num',numBlock).attr('data-num',numBlock).parent().css('display','block');
-
-        $(elem).find('input.days').prop('checked', false).val('0').unwrap().find('ins').remove();
-        //$(elem).find('input.days').prop('checked', false);
+        $(elem).find('input.days').prop('checked', false).unwrap().find('ins').remove();
 
         $(elem + " input").iCheck({
             checkboxClass: 'icheckbox_minimal',
             radioClass: 'iradio_minimal'
-        });
-
-        $('input.days:checkbox').on('ifChanged', function(event){
-            $(this).attr('value',Math.abs(parseInt($(this).attr('value')) - 1));
         });
 
         $(elem + ' .time-only-12').datetimepicker({
@@ -100,15 +110,6 @@ $(document).ready(function() {
         $('.datetime-pick input:text').on('click', function(){
             $(this).closest('.datetime-pick').find('.add-on i').click();
         });
-    });
-
-    // $('#submit-preferences').on('click', function(){
-    //     $('input.days').prop('checked', true);
-    // });
-
-
-    $('input.days:checkbox').on('ifClicked', function(event){
-        $(this).attr('value',Math.abs(parseInt($(this).attr('value')) - 1));
     });
 
     // remove dynamic timeblock
