@@ -276,7 +276,7 @@ public class Constants {
     public static final String FOOTER_FILE_NAME = "footer.jsp";
 
     public static final int NUM_OF_WEEKDAYS = 5;
-    public static final String[] WEEKDAY_ABBREVS = {"M","T","W","R","R"};
+    public static final String[] WEEKDAY_ABBREVS = {"M","T","W","R","F"};
 
     public static final String REFERER_HEADER = "referer";
 
