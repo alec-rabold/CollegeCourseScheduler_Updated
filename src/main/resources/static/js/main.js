@@ -32,9 +32,11 @@ $(document).ready(function() {
             indexStart += daysPerWeekBuffer;
         });
 
-        var val = $("input[name='api_call']:checked").val();
-        if(val === 'true') {
+        var val = $("input[name='api_key']:checked").val();
+        var beta_key = '8ad0544d-62d2-4937-8d5a-2f5dae04209e'; // temporary
+        if(val === beta_key) {
             e.preventDefault();
+            $('#isMobileBrowser').remove();
             var action = $('#preferences-form').attr('action');
             var apiAction = "/v1" + action;
             $('#preferences-form').attr('action', apiAction).submit();
@@ -80,7 +82,7 @@ $(document).ready(function() {
         $myGroup.find('.collapse.in').collapse('hide');
     });
 
-    $('#wantedProfs, #unwantedProfs, #excludedProfs').append($('#loadedProfessors').children()).trigger('chosen:update');
+    $('#favoredProfs, #disfavoredProfs, #excludedProfs').append($('#loadedProfessors').children()).trigger('chosen:update');
     $('#loadedProfessors').remove();
 
     $(window).on("load resize ", function() {

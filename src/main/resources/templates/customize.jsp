@@ -6,7 +6,7 @@
 <jsp:include page="header.jsp"/>
 
 <!----------- FORM--------------->
-<form id="preferences-form" method="POST" action="${requestScope['javax.servlet.forward.servlet_path']}${Constants.RESULTS_PERMUTATIONS_RELATIVE_PATH}" novalidate>
+<form id="preferences-form" method="POST" action="${requestScope['javax.servlet.forward.servlet_path']}${Constants.RESULTS_PERMUTATIONS_RELATIVE_PATH}">
     <div class="block-area">
         <h2 class="form bold" style="margin-bottom: 0px">Step 2: Enter your classes</h2>
     </div>
@@ -56,7 +56,7 @@
             <h4 class="form-h4"><span class="text-red">* </span>Select your classes:</h4>
             <div class="row">
                 <div class="col-xs-12 col-md-9">
-                    <select name="chosenCourse" data-placeholder="Select needed classes..." class="tag-select" multiple required>
+                    <select name="chosenCourses" data-placeholder="Select needed classes..." class="tag-select" multiple required>
                         <c:forEach items="${registrationData.coursesMetadata}" var="course">
                             <c:out escapeXml="false" value="<option value='${course.id}'/>${course.name} | ${course.title}"/>
                         </c:forEach>
@@ -144,7 +144,7 @@
             <h4 class="form-h4">Prioritize (preferred) professors:</h4>
             <div class="row">
                 <div class="col-xs-12 col-md-9">
-                    <select id="wantedProfs" name="wantedProfessors" data-native-menu="false"  data-placeholder="Search and select wanted professors..." class="tag-select" multiple>
+                    <select id="favoredProfs" name="favoredProfessors" data-native-menu="false"  data-placeholder="Search and select wanted professors..." class="tag-select" multiple>
 
                     </select>
                 </div>
@@ -160,7 +160,7 @@
             <h4 class="form-h4">De-prioritize (unwanted) professors:</h4>
             <div class="row">
                 <div class="col-xs-12 col-md-9">
-                    <select id="unwantedProfs" name="unwantedProfessors" data-native-menu="false"  data-placeholder="Search and select unwanted professors..." class="tag-select" multiple>
+                    <select id="disfavoredProfs" name="disfavoredProfessors" data-native-menu="false"  data-placeholder="Search and select unwanted professors..." class="tag-select" multiple>
 
                     </select>
                 </div>
@@ -195,13 +195,13 @@
                     <div class="col-xs-12 col-md-9">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="spreadPreference" value="tight" checked="checked" required>
+                                <input type="radio" name="relaxedVsCompactPreference" value="tight" checked="checked" required>
                                 Tight schedule (less breaks between classes)
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="spreadPreference" value="relaxed">
+                                <input type="radio" name="relaxedVsCompactPreference" value="relaxed">
                                 Relaxed schedule (more breaks between classes)
                             </label>
                         </div>
@@ -216,13 +216,13 @@
                     <div class="col-xs-12">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="doShowWaitlisted" value="true" checked="checked" required>
+                                <input type="radio" name="includeWaitlistedCourses" value="true" checked="checked" required>
                                 Yes, I want to see them in case I decide to waitlist
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="doShowWaitlisted" value="false">
+                                <input type="radio" name="includeWaitlistedCourses" value="false">
                                 No, I am not planning on waitlisting any classes
                             </label>
                         </div>
@@ -238,13 +238,13 @@
                     <div class="col-xs-12 col-md-9">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="doShowOnline" value="true" checked="checked" required>
+                                <input type="radio" name="includeOnlineCourses" value="true" checked="checked" required>
                                 Yes, include hybrid classes
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="doShowOnline" value="false">
+                                <input type="radio" name="includeOnlineCourses" value="false">
                                 No, do not include hybrid classes
                             </label>
                         </div>
@@ -259,13 +259,13 @@
                     <div class="col-xs-12 col-md-9">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="numClassesPerWeekPreference" value="fewer" checked="checked" required>
+                                <input type="radio" name="shorterVsFewerClassesPreference" value="fewer" checked="checked" required>
                                 I prefer having fewer days, but with longer classes
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="numClassesPerWeekPreference" value="more">
+                                <input type="radio" name="shorterVsFewerClassesPreference" value="more">
                                 I prefer having shorter classes, but on more days
                             </label>
                         </div>
@@ -279,13 +279,13 @@
                     <div class="col-xs-12 col-md-9">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="api_call" value="true" required>
+                                <input type="radio" name="api_key" value="8ad0544d-62d2-4937-8d5a-2f5dae04209e" required>
                                 Yes
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="api_call" checked="checked" value="false">
+                                <input type="radio" name="api_key" checked="checked" value="e652ec27-7b0d-4a24-9611-ce5ff46a6f08">
                                 No
                             </label>
                         </div>
@@ -298,7 +298,6 @@
             <div id="problems-form" class="feedback-box col-xs-12 col-md-4">
                 <h4 class="form-h4"><span class="text-red"></span>Found a bug?</h4>
                     <div class="feedback-box col-xs-12" style="padding-top: 10px">
-                        <!--textarea name="problemsTextbox" class="form-control textarea-autosize" placeholder="Let us know here..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea-->
                         <textarea id="bug-text" class="form-control textarea-autosize" placeholder="Let us know here..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea>
                         <button id="bug-button" type="button" class="btn-absolute btn-alt">Submit</button>
                     </div>
@@ -306,7 +305,6 @@
             <div id="suggestions-form" class="feedback-box col-xs-12 col-md-4 col-md-offset-1">
                 <h4 class="form-h4"><span class="text-red"></span>Any suggestions for us?</h4>
                 <div class="feedback-box col-xs-12" style="padding-top: 10px">
-                    <!--textarea name="suggestionsTextbox" class="form-control textarea-autosize" placeholder="Tell us what we can improve..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea-->
                     <textarea id="suggestion-text" class="form-control textarea-autosize" placeholder="Tell us what we can improve..." style="overflow: hidden; word-wrap: break-word; height: 48px;"></textarea>
                     <button id="suggestion-button" type="button" class="btn-absolute btn-alt">Submit</button>
                 </div>
@@ -316,19 +314,6 @@
         </div>
     </div>
     <!-- /Relaxed or Tight schedule && Waitlist -->
-
-    <!-- Determine if mobile -->
-    <input type="hidden" name="isMobileBrowser" id="isMobileBrowser" value="false">
-    <script>
-        $(document).ready(function() {
-        var isMobile = window.matchMedia("only screen and (max-width: 760px)");
-        if (isMobile.matches) {
-            $('#isMobileBrowser').val("true");
-        }
-        });
-    </script>
-    <!-- /Determine if mobile -->
-
     <div class="col-xs-12 col-md-8 p-l-20 p-r-15 m-t-15">
         <button id="submit-preferences" class="btn btn-block btn-alt m-b-20" type="submit">Submit!</button>
     </div>

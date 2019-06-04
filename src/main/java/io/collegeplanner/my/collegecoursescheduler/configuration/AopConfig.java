@@ -14,7 +14,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 @Aspect
 public class AopConfig {
-
     //@Pointcut("execution(public String io.collegeplanner.my.collegecoursescheduler.service.scraper.GenericScraper.doPermutationsAndGetApiResults())")
     @Pointcut("within(io.collegeplanner.my.collegecoursescheduler.service.scraper.*)")
     public void monitor() { }

@@ -21,7 +21,7 @@ public class ScheduleDto implements Comparable<ScheduleDto> {
 
     // TODO: more logical ranking algorithm..
     public int scoreSchedule() {
-        return this.userOptions.getScheduleSpreadPreference()
+        return this.userOptions.getRelaxedVsCompactPreference()
                 * (2  * this.courseTimeDensityMetric)
                 - (45 * this.wantedProfessorsCount)
                 + (55 * this.unwantedProfessorsCount)

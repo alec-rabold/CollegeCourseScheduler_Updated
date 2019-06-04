@@ -14,18 +14,15 @@ import lombok.experimental.Wither;
 public class FormParametersDto {
     private String year;
     private String season;
-    private String spreadPreference;
-    private String doShowWaitlisted;
-    private String doShowOnline;
-    private String numClassesPerWeekPreference;
-    private String problemsTextbox;
-    private String suggestionsTextbox;
-    private String[] chosenCourse;
-    private String[] wantedProfessors;
-    private String[] unwantedProfessors;
+    private String includeOnlineCourses;
+    private String includeWaitlistedCourses;
+    private String relaxedVsCompactPreference;
+    private String shorterVsFewerClassesPreference;
+    private String[] chosenCourses;
+    private String[] favoredProfessors;
+    private String[] disfavoredProfessors;
     private String[] excludedProfessors;
     private String[] unavailableTimeblockStart;
     private String[] unavailableTimeblockEnd;
     private String[] unavailableTimeblockDays;
-    private boolean isMobileBrowser;
 }

@@ -19,7 +19,7 @@ public class UserOptionsDto {
     @Builder.Default
     private int daysPerWeekPreference = 1;
     @Builder.Default
-    private int scheduleSpreadPreference = 1;
+    private int relaxedVsCompactPreference = 1;
     @Builder.Default
     private boolean showOnlineClasses = true;
     @Builder.Default

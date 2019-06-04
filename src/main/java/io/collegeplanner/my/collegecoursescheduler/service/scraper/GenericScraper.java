@@ -89,6 +89,13 @@ public abstract class GenericScraper {
         final PriorityQueue<ScheduleDto> validSchedules = new PriorityQueue<>();
         final PermutationsJobResultsDto results = new PermutationsJobResultsDto();
 
+        // TODO: crude mobile detection.. replace with feature lookbehind
+        if(request.getHeader("User-Agent").contains("Mobile")) {
+            this.setMobileBrowser(true);
+        } else {
+            this.setMobileBrowser(false);
+        }
+
         try {
             // Sort the course lists by size to allow for efficient dynamic programming techniques
             createSizeSortedCourses();
