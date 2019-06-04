@@ -30,6 +30,7 @@ import static io.collegeplanner.my.collegecoursescheduler.util.Constants.*;
 @Getter
 @Setter
 // TODO: keep reducing to core components of a "Generic Scraper"
+// TODO: this isn't even a "scraper" anymore.. refactor/rename/modularize
 public abstract class GenericScraper {
 
     @Autowired
@@ -431,6 +432,7 @@ public abstract class GenericScraper {
         return results;
     }
 
+    // TODO: modularize.. this is a behemoth mess
     /** Print 25 (or less) carousel tables of schedules */
     private final void printTables(final PriorityQueue<ScheduleDto> validSchedules,
                                    final HttpServletRequest request,
@@ -438,6 +440,7 @@ public abstract class GenericScraper {
                                    final boolean wasInterrupted) throws IOException, ServletException {
         final PrintWriter out = response.getWriter();
         try {
+            // TODO: should just include header and footer in every request..
             request.getRequestDispatcher(JSP_VIEW_RESOLVER_PREFIX + HEADER_FILE_NAME)
                 .include(request, response);
 
@@ -500,7 +503,7 @@ public abstract class GenericScraper {
                 } else {
                     out.println("<div class='item'>");
                 }
-                out.println("<table id='optimized-table'>");
+                out.println("<table class='optimized-table'>");
                 out.println("<tr>");
                 out.println("<th class='opt-table-label opt-table-time'></th>");
                 if (!isMobileBrowser) {
@@ -593,15 +596,14 @@ public abstract class GenericScraper {
                                     }
                                     out.print(" data-toggle='modal' data-courseid='" + uniqueIdentifier + "_" + j + "' data-target='#tableModal'");
                                     out.println(">");
-                                    out.println("<p id='course'><b>" + course.getCourse().toUpperCase() + "</b></p>");
+                                    out.println("<p class='course-data course-id'><b>" + course.getCourse().toUpperCase() + "</b></p>");
                                     out.print("<div ");
                                     // indented for ease of visualization
                                     if (isMobileBrowser) {
                                         out.print("style='display:none' ");
                                     }
                                     out.println(">");
-                                    out.print("<p id='title'><i>");
-                                    out.print("<p id='title'><i>");
+                                    out.print("<p class='course-data course-title'><i>");
                                     if (course.getTitle().length() > 40) {
                                         int cutoff = course.getTitle().indexOf(" ");
                                         while (cutoff >= 0 && cutoff < 35) {
@@ -616,27 +618,27 @@ public abstract class GenericScraper {
                                     }
                                     out.print("</i></p>");
                                     out.print("</i></p>");
-                                    out.println("<p id='instructors'>" + course_instructor + "</p>");
-                                    out.println("<p id='times'>" + time24to12(course_time) + "</p>");
-                                    out.println("<p id='schedNum'>Schedule #: " + course.getSchedNum() + "</p>");
+                                    out.println("<p class='course-data course-instructors'>" + course_instructor + "</p>");
+                                    out.println("<p class='course-data course-times'>" + time24to12(course_time) + "</p>");
+                                    out.println("<p class='course-data course-cid'>Schedule #: " + course.getSchedNum() + "</p>");
                                     out.println("</div>");
 
                                     /** Modal data (hidden) */
                                     out.print("<div ");
                                     out.print("style='display:none' ");
                                     out.println("class='" + uniqueIdentifier + "_" + j + " temp'>");
-                                    out.println("<p id='title'><i>" + course.getTitle().toUpperCase() + "</i></p>");
-                                    out.println("<p id='instructors'>" + course_instructor + "</p>");
-                                    out.println("<p id='times'>" + time24to12(course_time) + "</p>");
-                                    out.println("<p id='location'>" + course_location + "</p>");
-                                    out.println("<p id='schedNum'>Schedule #: " + course.getSchedNum() + "</p>");
+                                    out.println("<p class='course-title'><i>" + course.getTitle().toUpperCase() + "</i></p>");
+                                    out.println("<p class='course-instructors'>" + course_instructor + "</p>");
+                                    out.println("<p class='course-times'>" + time24to12(course_time) + "</p>");
+                                    out.println("<p class='course-location'>" + course_location + "</p>");
+                                    out.println("<p class='course-cid'>Schedule #: " + course.getSchedNum() + "</p>");
                                     if(course.getSeats() != null) {
-                                        out.print("<p id='seats'");
+                                        out.print("<p class='seats");
                                         // Check if waitlisted; if so red text
                                         if (course.getSeats().contains("-") || course.getSeats().charAt(0) == '0') {
-                                            out.print(" class='text-red'");
+                                            out.print(" text-red");
                                         }
-                                        out.println(">Available seats: " + course.getSeats() + "</p>");
+                                        out.println("'>Available seats: " + course.getSeats() + "</p>");
                                     }
                                     out.println("</div>");
                                     out.println("</td>");

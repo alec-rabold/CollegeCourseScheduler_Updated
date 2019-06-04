@@ -10,8 +10,6 @@
 $(document).ready(function() {
 
     $("#submit-preferences").on("click", function(e){
-        // Creates array of days
-        // $('input.days').prop('checked', true);
 
         var daysArray = [];
         $('input.days').each(function () {
@@ -175,7 +173,6 @@ $(document).ready(function() {
         var courseClass = "." + $(this).data('courseid') + "h";
         $(courseClass).removeClass('courseHover');
     });
-
 
     $.ajax({
         url: "/AnalyticsServlet",

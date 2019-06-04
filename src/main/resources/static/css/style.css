@@ -2393,38 +2393,38 @@ button.university {
 
 @import url('https://fonts.googleapis.com/css?family=Rokkitt');
 
-#optimized-table{
+.optimized-table{
 	width: 90%;
 	font-family: 'open-sans-light', sans-serif;
     table-layout: fixed;
     margin: 0 auto;
 }
-#optimized-table td{
+.optimized-table td{
 	border-right: 2px solid black;
 	text-align: left;
 }
-#optimized-table td{
+.optimized-table td{
 	font-family: 'Rokkitt';
 	color: black;
 	text-align: center;
 	font-size: 16px;
 	font-weight: 900;
 }
-#optimized-table td p{
+.optimized-table td p{
     margin: 0px;
 }
-#optimized-table td p b{
+.optimized-table td p b{
     text-decoration: underline;
 }
-#optimized-table .tooltips{
+.optimized-table .tooltips{
 	cursor: default;
 }
-#optimized-table .tooltips:hover{
+.optimized-table .tooltips:hover{
 	color: #FFD600;
 	background-color: #000000;
 }
 
-#optimized-table .opt-table-label{
+.optimized-table .opt-table-label{
 	background-color: rgba(255,255,255,0.6);
 	color: black;
 	font-size: 16px;
@@ -2432,25 +2432,24 @@ button.university {
 	padding: 6px;
     border: 2px solid black;
 }
-#optimized-table .opt-table-time{
+
+.optimized-table .opt-table-time{
 	text-align: right !important;
 	padding-left: 2px;
 	width: 90px !important;
 	font-family: 'open-sans-light', sans-serif;
     border: 2px solid black;
 }
+
 .bottomBorder{
     border-bottom: 2px solid black;
 }
+
 .tableCourse{
     cursor: pointer;
     transition: all .4s ease-in-out;
 }
-/*
-.tableCourse:hover{
-    transform: scale(1.05);
-}
-*/
+
 .courseHover{
     transform: scale(1.05);
 }

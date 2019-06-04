@@ -97,7 +97,7 @@
                             <li><a href="/">Sign Out</a> <i class="icon left">&#61903;</i><i class="icon right">&#61815;</i></li>
                         </ul>
                         <h4 class="m-0">Guest Profile</h4>
-                        @SBHacks_Guest
+                        @Guest_Profile
                     </div>
                     <!-- Calendar -->
                     <div class="s-widget m-b-25">
