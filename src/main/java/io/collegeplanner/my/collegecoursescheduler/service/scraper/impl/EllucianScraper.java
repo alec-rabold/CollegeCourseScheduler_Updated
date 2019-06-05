@@ -8,6 +8,7 @@ import io.collegeplanner.my.collegecoursescheduler.util.ChainedParserMetadata;
 import io.collegeplanner.my.collegecoursescheduler.util.ScraperUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -235,7 +236,8 @@ public class EllucianScraper extends GenericScraper {
                         ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START.length(), ELLUCIAN_SECTIONS_TABLE_COL_MARKER_END,
                         inputLine).getData();
                 final String formattedSchedType = formatSchedType(scheduleType);
-                newCourse.setCourse(courseBundleID + formattedSchedType);
+                newCourse.setCourse(courseBundleID + formattedSchedType); // include course type in course name ("CS-107 [LEC]")
+                newCourse.setType(formattedSchedType);
                 /** Instructor */
                 inputLine = in.readLine();
                 final String parsedInstructor = parseData(ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START,
@@ -244,7 +246,9 @@ public class EllucianScraper extends GenericScraper {
                 newCourse.getInstructors().add(parsedInstructor);
 
                 if(!firstClassInBundle) {
-                    newCourse.setParentCourse(parentCourse);
+                    if(!StringUtils.equals(newCourse.getType(), parentCourse.getType())) {
+                        newCourse.setParentCourse(parentCourse);
+                    }
                 }
 
                 // If it has every data point we need, then add it to the Course Map

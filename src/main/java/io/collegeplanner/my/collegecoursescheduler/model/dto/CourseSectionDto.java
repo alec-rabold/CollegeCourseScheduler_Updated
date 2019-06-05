@@ -13,6 +13,7 @@ public class CourseSectionDto implements Serializable {
     private String course;
     private String title;
     private String schedNum;
+    private String type;
     private String units;
     private String seats;
     private List<String> days = new ArrayList<>();

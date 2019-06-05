@@ -53,6 +53,7 @@ public abstract class GenericScraper {
 
     private boolean isMobileBrowser;
     private boolean timedOut = false;
+    public boolean existsDataForRemainingSeats;
 
     private long timeEnd = 0L;
     private long numPermutations = 0;
@@ -250,6 +251,7 @@ public abstract class GenericScraper {
 
                 /** Remove waitlisted classes option */
                 if(currentSchedule.get(0).getSeats() != null) {
+                    existsDataForRemainingSeats = true;
                     for (final CourseSectionDto crs : currentSchedule) {
                         final int numSeatsAvailable = Integer.parseInt(crs.getSeats().substring(0, crs.getSeats().indexOf("/")));
                         if (!(numSeatsAvailable > 0)) {
@@ -264,6 +266,8 @@ public abstract class GenericScraper {
                             foundAvailableCourses.add(crs.getCourse());
                         }
                     }
+                } else {
+                    existsDataForRemainingSeats = false;
                 }
 
                 /** User's unavailable time(s) option */
@@ -465,10 +469,10 @@ public abstract class GenericScraper {
             out.println("<div class='block-area'>");
             out.println("<div id='scheduleHeader' class='row'>");
             // Classes with 0 non-waitlisted sections
-            final Set<String> waitlistedClasses = ScraperUtils.getCoursesWithAllSectionsWaitlisted(foundAvailableCourses, sizeSortedCourses);
             out.println("<div class='col-xs-offset-1 col-xs-2'>");
             out.println("<h4 class='fewClasses'>[Note] All sections waitlisted:</h4>");
-            if (!waitlistedClasses.isEmpty()) {
+            final Set<String> waitlistedClasses = ScraperUtils.getCoursesWithAllSectionsWaitlisted(foundAvailableCourses, sizeSortedCourses);
+            if (this.existsDataForRemainingSeats && !waitlistedClasses.isEmpty()) {
                 out.println("<ul class='lists-fewClasses'>");
                 for (final String className : waitlistedClasses) {
                     out.println("<li>" + className + "</li>");
