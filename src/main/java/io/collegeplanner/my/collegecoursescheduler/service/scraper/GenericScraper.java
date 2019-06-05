@@ -11,6 +11,7 @@ import io.collegeplanner.my.collegecoursescheduler.util.ScraperUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -591,12 +592,12 @@ public abstract class GenericScraper {
                                 /** Create table elements for course meeting times */
                                 // *If the course starts at time 'i'
                                 final int[] classDays = convDaysToArray(course_days);
-                                String string_of_i = ((Integer) i).toString();
-                                // Fixes comparing 800 against 0800
-                                if (i < 1000) {
-                                    string_of_i = "0" + string_of_i;
-                                }
-                                if ((classDays[day] == 1) && (string_of_i.equals(course_time.substring(0, course_time.indexOf("-"))))) {
+
+                                final Range<Integer> startTimeRange = Range.between(i - 9, i + 5);
+                                final int courseStartTime = Integer.parseInt(course_time.substring(0, course_time.indexOf("-")));
+                                final boolean courseStartsHere = startTimeRange.contains(courseStartTime);
+
+                                if ((classDays[day] == 1) && courseStartsHere) {
                                     final int rowSpan = calculateRowspan(course, j);
                                     final String uniqueIdentifier = (course.getSchedNum().contains("***")) ?
                                             removeIllegalChars(course.getCourse() + "noSchedNum") :
