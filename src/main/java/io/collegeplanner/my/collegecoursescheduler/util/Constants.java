@@ -282,11 +282,18 @@ public class Constants {
 
     /** JSP views */
     public static final String INDEX_VIEW = "index";
+    public static final String ERROR_VIEW = "error";
     public static final String USER_PREFERENCES_FOR_SCHEDULE_VIEW = "customize";
 
     /** JSTL variable names */
     public static final String SELECTED_COLLEGE_ATTRIBUTE_NAME = "collegeName";
     public static final String REGISTRATION_DATA_ATTRIBUTE_NAME = "registrationData";
+    public static final String ERROR_CODE_ATTRIBUTE = "errorCode";
+    public static final String ERROR_CODE_MESSAGE = "errorMessage";
+
+    public static final String ERROR_MESSAGE_BASE = "Sorry, something went wrong.";
+    public static final String ERROR_MESSAGE_404 = "We weren't able to find the page you requested.";
+    public static final String ERROR_MESSAGE_500 = "We weren't able to complete your request.";
 
     /** (Prepared) SQL Queries */
     public static final String PREPARED_QUERY_SELECT_ALL_FROM_TABLE = "SELECT * FROM <table>";

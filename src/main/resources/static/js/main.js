@@ -4,9 +4,6 @@
  * and open the template in the editor.
  */
 
-// Resets checkboxes on re-load
-// $('input.days').val('0').prop('checked', false);
-
 $(document).ready(function() {
 
     $("#submit-preferences").on("click", function(e){
@@ -30,17 +27,35 @@ $(document).ready(function() {
             indexStart += daysPerWeekBuffer;
         });
 
+        // temporary solution
         var val = $("input[name='api_key']:checked").val();
         var beta_key = '8ad0544d-62d2-4937-8d5a-2f5dae04209e'; // temporary
         if(val === beta_key) {
             e.preventDefault();
-            $('#isMobileBrowser').remove();
             var action = $('#preferences-form').attr('action');
             var apiAction = "/v1" + action;
             $('#preferences-form').attr('action', apiAction).submit();
         }
     });
 
+    // temporary solution
+    $('.api-sel-true').on('click', function() {
+        var action = $('#preferences-form').attr('action');
+        // if url doesn't contain /v1 already, prepend it
+        if(action.indexOf('/v1') < 0) {
+            var apiAction = '/v1' + action;
+            $('#preferences-form').attr('action', apiAction);
+        }
+    });
+    // temporary solution
+    $('.api-sel-false').on('click', function() {
+        var action = $('#preferences-form').attr('action');
+        // if url contains /v1, remove it
+        if(action.indexOf('/v1') >= 0) {
+            var nonApiAction = action.replace('/v1', '');
+            $('#preferences-form').attr('action', nonApiAction);
+        }
+    });
 
     $('#bug-button').on('click', function () {
         $(this).prop("disabled", true).html('Sending..').addClass("loading");
