@@ -192,7 +192,8 @@ public class Constants {
     public static final String ELLUCIAN_COURSE_ID_MARKER_END = " - ";
     public static final String ELLUCIAN_SCHEDULED_MEETING_TIMES_MARKER = "Scheduled Meeting Times";
     public static final String ELLUCIAN_COURSE_SECTION_MARKER = "<tr>";
-    public static final String ELLUCIAN_COURSE_SECTION_MARKER_END = "</tbody>";
+//    public static final String ELLUCIAN_COURSE_SECTION_MARKER_END = "</tbody>";
+    public static final String ELLUCIAN_COURSE_SECTION_MARKER_END = "</table>";
     public static final String ELLUCIAN_NUM_CREDITS_MARKER = "Credits";
 
 
