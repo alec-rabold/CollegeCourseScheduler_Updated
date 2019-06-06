@@ -1,6 +1,7 @@
 package io.collegeplanner.my.collegecoursescheduler.service.scraper.factories;
 
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 
 import static io.collegeplanner.my.collegecoursescheduler.util.Constants.*;
 
@@ -12,12 +13,11 @@ public class TermCodeFactory {
                 return termCodeForBrown(season, year);
             case GEORGIA_TECH:
                 return termCodeForGeorgiaTech(season, year);
+            case GEORGE_MASON_UNIVERSITY:
+                return termCodeForGeorgeMason(season, year);
             default:
-                return termCodeForDefault(season, year);
-
+                return errorSettingTerm(college, season, year);
         }
-
-
     }
 
     private static String termCodeForBrown(final String season, final String year) {
@@ -31,8 +31,7 @@ public class TermCodeFactory {
             case SEASONS_SUMMER:
                 return year + "00";
             default:
-                log.error("Error setting term");
-                return "";
+                return errorSettingTerm(BROWN_UNIVERSITY, season, year);
         }
     }
 
@@ -46,14 +45,27 @@ public class TermCodeFactory {
             case SEASONS_SPRING:
                 return year + "02";
             default:
-                log.error("Error setting term");
-                return "";
+                return errorSettingTerm(GEORGIA_TECH, season, year);
         }
     }
 
-    private static String termCodeForDefault(final String season, final String year) {
-        final String res = "";
-        return res;
+    private static String termCodeForGeorgeMason(final String season, final String year) {
+        switch (season) {
+            case SEASONS_FALL:
+                return year + "70";
+            case SEASONS_SUMMER:
+                return year + "40";
+            case SEASONS_WINTER:
+            case SEASONS_SPRING:
+                return year + "10";
+            default:
+                return errorSettingTerm(GEORGE_MASON_UNIVERSITY, season, year);
+        }
+    }
+
+    private static String errorSettingTerm(final String college, final String season, final String year) {
+        log.error("Error setting term for college: {}, season: {}, year: {}", college, season, year);
+        return StringUtils.EMPTY;
     }
 
     private static String incrementString(final String year) {
