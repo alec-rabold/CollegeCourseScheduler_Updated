@@ -243,6 +243,15 @@ public class Constants {
             .put(GEORGIA_TECH, ELLUCIAN_SS_DATA_GEORGIA_TECH)
             .build();
 
+    // TermID titles to ignore while parsing
+    public static final Set<String> ignoredTerms = ImmutableSet.<String>builder()
+            .add("SPS")
+            .add("Institute")
+            .add("Inst")
+            .add("Special")
+            .add("Spec")
+            .build();
+
     // Result codes
     // TODO: (remove) - these are already defined as constants in HTTPUrlConnection
     public static final int RESULT_CODE_OK = 200;
@@ -279,13 +288,19 @@ public class Constants {
 
     /** (Prepared) SQL Queries */
     public static final String PREPARED_QUERY_SELECT_ALL_FROM_TABLE = "SELECT * FROM <table>";
+
     public static final String PREPARED_QUERY_CREATE_PROFESSORS_TABLE = "CREATE TABLE IF NOT EXISTS <table> (p_name VARCHAR(255) PRIMARY KEY, p_value VARCHAR(255))";
     public static final String PREPARED_QUERY_CREATE_SUBJECTS_TABLE = "CREATE TABLE IF NOT EXISTS <table> (s_abbr VARCHAR(255) PRIMARY KEY, s_full VARCHAR(255))";
     public static final String PREPARED_QUERY_CREATE_COURSES_TABLE = "CREATE TABLE IF NOT EXISTS <table> (c_name VARCHAR(255) PRIMARY KEY, c_title VARCHAR(255), c_id VARCHAR(255))";
+
     public static final String PREPARED_QUERY_UPDATE_PROFESSORS_TABLE = "INSERT INTO <table>(p_name, p_value) VALUES (:name, :value) ON DUPLICATE KEY UPDATE p_value = VALUES(p_value)";
     public static final String PREPARED_QUERY_UPDATE_SUBJECTS_TABLE = "INSERT INTO <table>(s_abbr, s_full) VALUES (:subjAbbr, :subjFull) ON DUPLICATE KEY UPDATE s_full = VALUES(s_full)";
     public static final String PREPARED_QUERY_UPDATE_COURSES_TABLE = "INSERT INTO <table>(c_name, c_title, c_id) VALUES (:courseName, :title, :courseId) ON DUPLICATE KEY UPDATE c_title = VALUES(c_title)";
     public static final String PREPARED_QUERY_UPDATE_FEEDBACK_TABLE = "INSERT INTO <table>(user_input) VALUES (:userInput)";
+
+    public static final String PREPARED_QUERY_REMOVE_INVALID_ROWS = "DELETE FROM <table> WHERE c_id REGEXP '^[0-9]+$'";
+    public static final String PREPARED_QUERY_REPLACE_HYPHENS_WITH_SPACES = "UPDATE <table> SET c_id = REPLACE(c_id, '-', ' ')";
+
 
     /** Table Names */
     // Prefixes
@@ -315,6 +330,14 @@ public class Constants {
             COURSE_REGISTRATION_DATA_TABLE_PREFIX + GEORGE_MASON_UNIVERSITY;
     public static final String GEORGIA_TECH_COURSE_REGISTRATION_DATA_TABLE =
             COURSE_REGISTRATION_DATA_TABLE_PREFIX + GEORGIA_TECH;
+    public static final String UTK_COURSE_REGISTRATION_DATA_TABLE =
+            COURSE_REGISTRATION_DATA_TABLE_PREFIX + UNIVERSITY_OF_TENNESSEE_KNOXVILLE;
+    public static final String DREXEL_COURSE_REGISTRATION_DATA_TABLE =
+            COURSE_REGISTRATION_DATA_TABLE_PREFIX + DREXEL_UNIVERSITY;
+    public static final String WEBER_COURSE_REGISTRATION_DATA_TABLE =
+            COURSE_REGISTRATION_DATA_TABLE_PREFIX + WEBER_STATE_UNIVERSITY;
+    public static final String HARPER_COURSE_REGISTRATION_DATA_TABLE =
+            COURSE_REGISTRATION_DATA_TABLE_PREFIX + HARPER_COLLEGE;
 
     // Professors
     public static final String UW_PROFESSORS_TABLE =
@@ -337,6 +360,14 @@ public class Constants {
             PROFESSORS_TABLE_PREFIX + GEORGE_MASON_UNIVERSITY;
     public static final String GEORGIA_TECH_PROFESSORS_TABLE =
             PROFESSORS_TABLE_PREFIX + GEORGIA_TECH;
+    public static final String UTK_PROFESSORS_TABLE =
+            PROFESSORS_TABLE_PREFIX + UNIVERSITY_OF_TENNESSEE_KNOXVILLE;
+    public static final String DREXEL_PROFESSORS_TABLE =
+            PROFESSORS_TABLE_PREFIX + DREXEL_UNIVERSITY;
+    public static final String WEBER_PROFESSORS_TABLE =
+            PROFESSORS_TABLE_PREFIX + WEBER_STATE_UNIVERSITY;
+    public static final String HARPER_PROFESSORS_TABLE =
+            PROFESSORS_TABLE_PREFIX + HARPER_COLLEGE;
 
     // Feedback
     public static final String FEEDBACK_BUGS_TABLE = FEEDBACK_TABLE_PREFIX + "bugs";
@@ -368,6 +399,10 @@ public class Constants {
             .put(GEORGIA_STATE_UNIVERSITY, GSU_COURSE_REGISTRATION_DATA_TABLE)
             .put(GEORGE_MASON_UNIVERSITY, GMU_COURSE_REGISTRATION_DATA_TABLE)
             .put(GEORGIA_TECH, GEORGIA_TECH_COURSE_REGISTRATION_DATA_TABLE)
+            .put(UNIVERSITY_OF_TENNESSEE_KNOXVILLE, UTK_COURSE_REGISTRATION_DATA_TABLE)
+            .put(DREXEL_UNIVERSITY, DREXEL_COURSE_REGISTRATION_DATA_TABLE)
+            .put(WEBER_STATE_UNIVERSITY, WEBER_COURSE_REGISTRATION_DATA_TABLE)
+            .put(HARPER_COLLEGE, HARPER_COURSE_REGISTRATION_DATA_TABLE)
             .build();
 
     public static final Map<String, String> PROFESSORS_TABLES = ImmutableMap.<String, String>builder()
@@ -381,6 +416,10 @@ public class Constants {
             .put(GEORGIA_STATE_UNIVERSITY, GSU_PROFESSORS_TABLE)
             .put(GEORGE_MASON_UNIVERSITY, GMU_PROFESSORS_TABLE)
             .put(GEORGIA_TECH, GEORGIA_TECH_PROFESSORS_TABLE)
+            .put(UNIVERSITY_OF_TENNESSEE_KNOXVILLE, UTK_PROFESSORS_TABLE)
+            .put(DREXEL_UNIVERSITY, DREXEL_PROFESSORS_TABLE)
+            .put(WEBER_STATE_UNIVERSITY, WEBER_PROFESSORS_TABLE)
+            .put(HARPER_COLLEGE, HARPER_PROFESSORS_TABLE)
             .build();
 
     /** Error logging */

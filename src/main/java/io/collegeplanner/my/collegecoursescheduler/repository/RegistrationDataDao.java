@@ -42,6 +42,12 @@ public interface RegistrationDataDao {
                                 @Bind("courseName") final Set<String> courseName, @Bind("title")
                                 final Collection<String> titles, @Bind("courseId") final Set<String> courseIds);
 
+    @SqlUpdate(PREPARED_QUERY_REMOVE_INVALID_ROWS)
+    void removeInvalidRowsFromCoursesTable(@Define("table") final String tableName);
+
+    @SqlUpdate(PREPARED_QUERY_REPLACE_HYPHENS_WITH_SPACES)
+    void replaceHypensWithSpacesForIdColumnInCoursesTable(@Define("table") final String tableName);
+
     @SqlQuery(PREPARED_QUERY_SELECT_ALL_FROM_TABLE)
     @RegisterBeanMapper(value = ProfessorsDto.class, prefix = "p")
     List<ProfessorsDto> getProfessorsFromTable(@Define("table") final String tableName);
@@ -55,6 +61,11 @@ public interface RegistrationDataDao {
                 this.getCoursesFromTable(COURSE_REGISTRATION_DATA_TABLES.get(collegeName)),
                 this.getProfessorsFromTable(PROFESSORS_TABLES.get(collegeName))
         );
+    }
+
+    default void formatColumnsForCoursesTable(final String tableName) {
+        this.removeInvalidRowsFromCoursesTable(tableName);
+        this.replaceHypensWithSpacesForIdColumnInCoursesTable(tableName);
     }
 
 

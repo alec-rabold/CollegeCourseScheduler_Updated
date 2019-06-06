@@ -16,9 +16,11 @@ import static io.collegeplanner.my.collegecoursescheduler.util.Constants.*;
 public class EllucianDataScraperJob {
 
     public static void main(String[] args) throws IOException {
-        scrapeAllDataForCollege(GEORGIA_TECH);
-        scrapeAllDataForCollege(PURDUE_UNIVERSITY);
-        scrapeAllDataForCollege(GEORGE_MASON_UNIVERSITY);
+        scrapeAllDataForCollege(UNIVERSITY_OF_TENNESSEE_KNOXVILLE);
+        scrapeAllDataForCollege(DREXEL_UNIVERSITY);
+        scrapeAllDataForCollege(WEBER_STATE_UNIVERSITY);
+        scrapeAllDataForCollege(HARPER_COLLEGE);
+        scrapeAllDataForCollege(GEORGIA_STATE_UNIVERSITY);
     }
 
     public static void scrapeAllDataForAllColleges() {

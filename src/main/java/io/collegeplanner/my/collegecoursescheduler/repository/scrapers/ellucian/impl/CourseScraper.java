@@ -30,16 +30,18 @@ public class CourseScraper extends EllucianDataScraper {
         jdbi.onDemand(RegistrationDataDao.class).createCoursesTableIfNotExists(tableName);
         jdbi.onDemand(RegistrationDataDao.class).updateCoursesTableBulk(tableName,
                 coursesMap.keySet(), coursesMap.values(), coursesMap.keySet());
+        jdbi.onDemand(RegistrationDataDao.class).formatColumnsForCoursesTable(tableName);
+
+        log.info("Courses persisted to database for college: {}", college);
     }
 
     private static Map<String, String> getCourses(final String baseDataPage, final Set<String> termIds) throws IOException {
         final Map<String, String> coursesMap = new TreeMap<>(); // {CourseID --> Course Title}
 
-        nextTermId:
+        nextTerm:
         for(final String term : termIds) {
             final Set<String> subjectCodes = SubjectScraper.getSubjects(baseDataPage, term).keySet();
             final String dataPage = baseDataPage + ELLUCIAN_REGISTRATION_COURSES_RELATIVE_PATH;
-//            final String unencodedFormData = ELLUCIAN_SS_COURSE_DATA_FORM_DATA + EllucianDataScraper.formatTermParameters(termIds, true) + EllucianDataScraper.formatSubjectParameters(subjects);
             final String unencodedFormData = ELLUCIAN_SS_COURSE_DATA_FORM_DATA + term + EllucianDataScraper.formatSubjectParameters(subjectCodes);
             final BufferedReader in = getReaderForPageWithParams(dataPage, unencodedFormData,
                     baseDataPage + ELLUCIAN_REGISTRATION_TERM_DATA_RELATIVE_PATH);
@@ -49,7 +51,7 @@ public class CourseScraper extends EllucianDataScraper {
                 String inputLine = in.readLine();
                 if (inputLine == null) {
                     log.error("Unreachable datapage");
-                    // continue nextTermId;
+                    continue nextTerm;
                 }
                 parsingJob:
                 while (inputLine != null) {
@@ -57,7 +59,7 @@ public class CourseScraper extends EllucianDataScraper {
                             || inputLine.contains(ELLUCIAN_SS_TERM_DATA_FALSE_MARKER)) {
                         inputLine = in.readLine();
                         if (inputLine == null) {
-                            log.error("End of page reached for baseDataPage {} TermID: {}", baseDataPage, term);
+                            // log.error("End of page reached for baseDataPage {} TermID: {}", baseDataPage, term);
                             break parsingJob;
                         }
                     }
@@ -92,7 +94,7 @@ public class CourseScraper extends EllucianDataScraper {
             } catch (final Exception e) {
                 log.error(e);
                 System.out.println("Continuing");
-                continue nextTermId;
+                continue nextTerm;
             } finally {
                 in.close();
             }
