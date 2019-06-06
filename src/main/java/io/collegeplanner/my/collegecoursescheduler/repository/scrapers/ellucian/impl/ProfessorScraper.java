@@ -25,6 +25,8 @@ public class ProfessorScraper extends EllucianDataScraper {
         final String baseDataPage = ELLUCIAN_UNIVERSITIES_SS_DATA_PAGES.get(college);
         final Map<String, String> instuctorsMap = getInstructors(baseDataPage, termIds);
 
+        log.info("Professors found for college: {}", college);
+
         final Jdbi jdbi = DatabaseUtils.getDatabaseConnection();
         final String tableName = PROFESSORS_TABLE_PREFIX + college;
         jdbi.onDemand(RegistrationDataDao.class).createProfessorsTableIfNotExists(tableName);
@@ -84,6 +86,7 @@ public class ProfessorScraper extends EllucianDataScraper {
     private static Map<String, String> getInstructors(final String baseDataPage, final Set<String> termIds) throws IOException {
         final Map<String, String> instructorsMap = new TreeMap<>(); // {Instructor --> Instructor Code}
 
+        nextTerm:
         for(final String term : termIds) {
             final String dataPage = baseDataPage + ELLUCIAN_REGISTRATION_TERM_DATA_RELATIVE_PATH;
     //        final String unencodedFormData = ELLUCIAN_SS_TERM_DATA_FORM_DATA + EllucianDataScraper.formatTermParameters(termIds, false);
@@ -103,7 +106,8 @@ public class ProfessorScraper extends EllucianDataScraper {
                     inputLine = in.readLine();
                     if (inputLine == null) {
                         log.error("No instructors found specified term. End of page reached for baseDataPage {}", baseDataPage);
-                        return null;
+                        continue nextTerm;
+//                        return null;
                     }
                 }
                 in.readLine(); // skip first line (kind of a hacky fix..) // TODO: make more elegant

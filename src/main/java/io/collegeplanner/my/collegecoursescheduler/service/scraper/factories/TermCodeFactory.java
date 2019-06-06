@@ -1,7 +1,6 @@
 package io.collegeplanner.my.collegecoursescheduler.service.scraper.factories;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.StringUtils;
 
 import static io.collegeplanner.my.collegecoursescheduler.util.Constants.*;
 
@@ -11,6 +10,8 @@ public class TermCodeFactory {
         switch(college) {
             case BROWN_UNIVERSITY:
                 return termCodeForBrown(season, year);
+            case GEORGIA_TECH:
+                return termCodeForGeorgiaTech(season, year);
             default:
                 return termCodeForDefault(season, year);
 
@@ -29,6 +30,21 @@ public class TermCodeFactory {
                 return decrementString(year) + "20";
             case SEASONS_SUMMER:
                 return year + "00";
+            default:
+                log.error("Error setting term");
+                return "";
+        }
+    }
+
+    private static String termCodeForGeorgiaTech(final String season, final String year) {
+        switch (season) {
+            case SEASONS_FALL:
+                return year + "08";
+            case SEASONS_SUMMER:
+                return year + "05";
+            case SEASONS_WINTER:
+            case SEASONS_SPRING:
+                return year + "02";
             default:
                 log.error("Error setting term");
                 return "";

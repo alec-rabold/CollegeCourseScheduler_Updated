@@ -16,7 +16,9 @@ import static io.collegeplanner.my.collegecoursescheduler.util.Constants.*;
 public class EllucianDataScraperJob {
 
     public static void main(String[] args) throws IOException {
-        scrapeAllDataForAllColleges();
+        scrapeAllDataForCollege(GEORGIA_TECH);
+        scrapeAllDataForCollege(PURDUE_UNIVERSITY);
+        scrapeAllDataForCollege(GEORGE_MASON_UNIVERSITY);
     }
 
     public static void scrapeAllDataForAllColleges() {
@@ -40,10 +42,22 @@ public class EllucianDataScraperJob {
         final Set<String> termIds = EllucianDataScraper.getMostRecentTermIds(
                 ELLUCIAN_SS_DATA_DEFAULT_NUM_TERMS, baseDataPage);
 
-        instructorScraper.scrapeAndPersistDataForCollege(college, termIds);
-        // subjectScraper.scrapeAndPersistDataForCollege(college, termIds);
-        courseScraper.scrapeAndPersistDataForCollege(college, termIds);
+        new Thread (() -> {
+            try {
+                instructorScraper.scrapeAndPersistDataForCollege(college, termIds);
+            } catch (final Exception e) {
+                log.error(e);
+            }
+        }).start();
 
+        new Thread (() -> {
+            try {
+                courseScraper.scrapeAndPersistDataForCollege(college, termIds);
+            } catch (final Exception e) {
+                log.error(e);
+            }
+        }).start();
 
+        log.info("Finished scraping data for college: {}", college);
     }
 }

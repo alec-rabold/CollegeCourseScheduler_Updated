@@ -1,10 +1,8 @@
 package io.collegeplanner.my.collegecoursescheduler.util;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -38,15 +36,6 @@ public class Constants {
     public static final String HARPER_COLLEGE = "Harper";
     public static final String BROWN_UNIVERSITY = "Brown";
     public static final String GEORGIA_TECH = "GeorgiaTech";
-
-
-//    /** Short college names */
-//    public static final String UW = UNIVERSITY_OF_WASHINGTON;
-//    public static final String WSU = WASHINGTON_STATE_UNIVERSITY;
-//    public static final String SDSU = SAN_DIEGO_STATE_UNIVERSITY;
-//    public static final String UCSB = UNIVERSITY_OF_CALIFORNIA_SANTA_BARBARA;
-//    public static final String PURDUE = PURDUE_UNIVERSITY;
-//    public static final String BERKELEY = UNIVERSITY_OF_CALIFORNIA_BERKELEY;
 
     public static final String REDIRECT_URL_PREFIX = "redirect:/";
 
@@ -199,14 +188,6 @@ public class Constants {
 
     public static final int ELLUCIAN_SECTIONS_TABLE_ROW_HEADER = 1; // the first row is the table header (to be skipped while parsing)
     public static final int ELLUCIAN_SECTIONS_TABLE_SECOND_COURSE_IN_BUNDLE = 3; // first row is header (1), second row is first course (2), third row is second course (3)
-    public static final int ELLUCIAN_SECTIONS_TABLE_COL_COUNT = 7; // there are 7 columns of data
-    public static final int ELLUCIAN_SECTIONS_TABLE_COL_TYPE = 0;
-    public static final int ELLUCIAN_SECTIONS_TABLE_COL_TIMES = 1;
-    public static final int ELLUCIAN_SECTIONS_TABLE_COL_DAYS = 2;
-    public static final int ELLUCIAN_SECTIONS_TABLE_COL_LOCATIONS = 3;
-    public static final int ELLUCIAN_SECTIONS_TABLE_COL_DATES = 4;
-    public static final int ELLUCIAN_SECTIONS_TABLE_COL_SCHED_TYPE = 5;
-    public static final int ELLUCIAN_SECTIONS_TABLE_COL_PROFESSORS = 6;
     public static final String ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START = "<td CLASS=\"dddefault\">";
     public static final String ELLUCIAN_SECTIONS_TABLE_COL_MARKER_END = "</td>";
 
@@ -227,7 +208,7 @@ public class Constants {
 
     public static final String ELLUCIAN_SS_DATA_TERM_MARKER_START = "VALUE=\"";
     public static final String ELLUCIAN_SS_DATA_TERM_MARKER_END = "\">";
-    public static final int ELLUCIAN_SS_DATA_DEFAULT_NUM_TERMS = 8;
+    public static final int ELLUCIAN_SS_DATA_DEFAULT_NUM_TERMS = 4;
     public static final String ELLUCIAN_SS_TERM_DATA_FORM_DATA = "p_calling_proc=bwckschd.p_disp_dyn_sched&p_term=";
 //    public static final String ELLUCIAN_SS_TERM_DATA_FORM_DATA = "p_calling_proc=bwckschd.p_disp_dyn_sched";
     public static final String ELLUCIAN_SS_COURSE_DATA_FORM_DATA = "sel_subj=dummy&sel_day=dummy&sel_schd=dummy&sel_insm=dummy&sel_camp=dummy&sel_levl=dummy&sel_sess=dummy&sel_instr=dummy&sel_ptrm=dummy&sel_attr=dummy&sel_crse=&sel_title=&sel_schd=%25&sel_from_cred=&sel_to_cred=&sel_levl=%25&sel_instr=%25&sel_attr=%25&begin_hh=0&begin_mi=0&begin_ap=a&end_hh=0&end_mi=0&end_ap=a&term_in=";
@@ -300,17 +281,16 @@ public class Constants {
     public static final String PREPARED_QUERY_SELECT_ALL_FROM_TABLE = "SELECT * FROM <table>";
     public static final String PREPARED_QUERY_CREATE_PROFESSORS_TABLE = "CREATE TABLE IF NOT EXISTS <table> (p_name VARCHAR(255) PRIMARY KEY, p_value VARCHAR(255))";
     public static final String PREPARED_QUERY_CREATE_SUBJECTS_TABLE = "CREATE TABLE IF NOT EXISTS <table> (s_abbr VARCHAR(255) PRIMARY KEY, s_full VARCHAR(255))";
-    public static final String PREPARED_QUERY_CREATE_COURSES_TABLE = "CREATE TABLE IF NOT EXISTS <table> (c_id VARCHAR(255) PRIMARY KEY, c_title VARCHAR(255))";
+    public static final String PREPARED_QUERY_CREATE_COURSES_TABLE = "CREATE TABLE IF NOT EXISTS <table> (c_name VARCHAR(255) PRIMARY KEY, c_title VARCHAR(255), c_id VARCHAR(255))";
     public static final String PREPARED_QUERY_UPDATE_PROFESSORS_TABLE = "INSERT INTO <table>(p_name, p_value) VALUES (:name, :value) ON DUPLICATE KEY UPDATE p_value = VALUES(p_value)";
     public static final String PREPARED_QUERY_UPDATE_SUBJECTS_TABLE = "INSERT INTO <table>(s_abbr, s_full) VALUES (:subjAbbr, :subjFull) ON DUPLICATE KEY UPDATE s_full = VALUES(s_full)";
-    public static final String PREPARED_QUERY_UPDATE_COURSES_TABLE = "INSERT INTO <table>(c_id, c_title) VALUES (:courseId, :title) ON DUPLICATE KEY UPDATE c_title = VALUES(c_title)";
+    public static final String PREPARED_QUERY_UPDATE_COURSES_TABLE = "INSERT INTO <table>(c_name, c_title, c_id) VALUES (:courseName, :title, :courseId) ON DUPLICATE KEY UPDATE c_title = VALUES(c_title)";
     public static final String PREPARED_QUERY_UPDATE_FEEDBACK_TABLE = "INSERT INTO <table>(user_input) VALUES (:userInput)";
 
     /** Table Names */
     // Prefixes
     public static final String PROFESSORS_TABLE_PREFIX = "professors_";
     public static final String SUBJECTS_TABLE_PREFIX = "subjects_";
-    public static final String COURSES_TABLE_PREFIX = "courses_";
     public static final String COURSE_REGISTRATION_DATA_TABLE_PREFIX = "course_registration_data_";
     public static final String FEEDBACK_TABLE_PREFIX = "feedback_";
 
@@ -329,6 +309,12 @@ public class Constants {
             COURSE_REGISTRATION_DATA_TABLE_PREFIX + PURDUE_UNIVERSITY;
     public static final String BROWN_COURSE_REGISTRATION_DATA_TABLE =
             COURSE_REGISTRATION_DATA_TABLE_PREFIX + BROWN_UNIVERSITY;
+    public static final String GSU_COURSE_REGISTRATION_DATA_TABLE =
+            COURSE_REGISTRATION_DATA_TABLE_PREFIX + GEORGIA_STATE_UNIVERSITY;
+    public static final String GMU_COURSE_REGISTRATION_DATA_TABLE =
+            COURSE_REGISTRATION_DATA_TABLE_PREFIX + GEORGE_MASON_UNIVERSITY;
+    public static final String GEORGIA_TECH_COURSE_REGISTRATION_DATA_TABLE =
+            COURSE_REGISTRATION_DATA_TABLE_PREFIX + GEORGIA_TECH;
 
     // Professors
     public static final String UW_PROFESSORS_TABLE =
@@ -345,6 +331,12 @@ public class Constants {
             PROFESSORS_TABLE_PREFIX + PURDUE_UNIVERSITY;
     public static final String BROWN_PROFESSORS_TABLE =
             PROFESSORS_TABLE_PREFIX + BROWN_UNIVERSITY;
+    public static final String GSU_PROFESSORS_TABLE =
+            PROFESSORS_TABLE_PREFIX + GEORGIA_STATE_UNIVERSITY;
+    public static final String GMU_PROFESSORS_TABLE =
+            PROFESSORS_TABLE_PREFIX + GEORGE_MASON_UNIVERSITY;
+    public static final String GEORGIA_TECH_PROFESSORS_TABLE =
+            PROFESSORS_TABLE_PREFIX + GEORGIA_TECH;
 
     // Feedback
     public static final String FEEDBACK_BUGS_TABLE = FEEDBACK_TABLE_PREFIX + "bugs";
@@ -365,15 +357,6 @@ public class Constants {
             GEORGIA_TECH
     );
 
-    public static final List<String> SUPPORTED_COLLEGES_RELATIVE_PATHS = ImmutableList.of(
-            UW_RELATIVE_PATH,
-            WSU_RELATIVE_PATH,
-            SDSU_RELATIVE_PATH,
-            UCSB_RELATIVE_PATH,
-            BERKELEY_RELATIVE_PATH,
-            PURDUE_RELATIVE_PATH
-    );
-
     public static final Map<String, String> COURSE_REGISTRATION_DATA_TABLES = ImmutableMap.<String, String>builder()
             .put(UNIVERSITY_OF_WASHINGTON, UW_COURSE_REGISTRATION_DATA_TABLE)
             .put(WASHINGTON_STATE_UNIVERSITY, WSU_COURSE_REGISTRATION_DATA_TABLE)
@@ -382,6 +365,9 @@ public class Constants {
             .put(UNIVERSITY_OF_CALIFORNIA_BERKELEY, BERKELEY_COURSE_REGISTRATION_DATA_TABLE)
             .put(PURDUE_UNIVERSITY, PURDUE_COURSE_REGISTRATION_DATA_TABLE)
             .put(BROWN_UNIVERSITY, BROWN_COURSE_REGISTRATION_DATA_TABLE)
+            .put(GEORGIA_STATE_UNIVERSITY, GSU_COURSE_REGISTRATION_DATA_TABLE)
+            .put(GEORGE_MASON_UNIVERSITY, GMU_COURSE_REGISTRATION_DATA_TABLE)
+            .put(GEORGIA_TECH, GEORGIA_TECH_COURSE_REGISTRATION_DATA_TABLE)
             .build();
 
     public static final Map<String, String> PROFESSORS_TABLES = ImmutableMap.<String, String>builder()
@@ -392,6 +378,9 @@ public class Constants {
             .put(UNIVERSITY_OF_CALIFORNIA_BERKELEY, BERKELEY_PROFESSORS_TABLE)
             .put(PURDUE_UNIVERSITY, PURDUE_PROFESSORS_TABLE)
             .put(BROWN_UNIVERSITY, BROWN_PROFESSORS_TABLE)
+            .put(GEORGIA_STATE_UNIVERSITY, GSU_PROFESSORS_TABLE)
+            .put(GEORGE_MASON_UNIVERSITY, GMU_PROFESSORS_TABLE)
+            .put(GEORGIA_TECH, GEORGIA_TECH_PROFESSORS_TABLE)
             .build();
 
     /** Error logging */

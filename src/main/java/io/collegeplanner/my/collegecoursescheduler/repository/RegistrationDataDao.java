@@ -39,7 +39,8 @@ public interface RegistrationDataDao {
 
     @SqlBatch(PREPARED_QUERY_UPDATE_COURSES_TABLE)
     void updateCoursesTableBulk(@Define("table") final String tableName,
-                                   @Bind("courseId") final Set<String> courseIds, @Bind("title") final Collection<String> titles);
+                                @Bind("courseName") final Set<String> courseName, @Bind("title")
+                                final Collection<String> titles, @Bind("courseId") final Set<String> courseIds);
 
     @SqlQuery(PREPARED_QUERY_SELECT_ALL_FROM_TABLE)
     @RegisterBeanMapper(value = ProfessorsDto.class, prefix = "p")

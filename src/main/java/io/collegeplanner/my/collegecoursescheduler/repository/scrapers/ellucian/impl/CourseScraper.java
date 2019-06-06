@@ -21,19 +21,15 @@ public class CourseScraper extends EllucianDataScraper {
     @Override
     public void scrapeAndPersistDataForCollege(final String college, final Set<String> termIds) throws IOException {
         final String baseDataPage = ELLUCIAN_UNIVERSITIES_SS_DATA_PAGES.get(college);
-//        final Set<String> subjectCodes = SubjectScraper.getSubjects(baseDataPage, termIds).keySet();
         final Map<String, String> coursesMap = getCourses(baseDataPage, termIds);
 
-        coursesMap.forEach((key, value) -> System.out.println(key + ", " + value));
+        log.info("Courses found for college: {}", college);
 
         final Jdbi jdbi = DatabaseUtils.getDatabaseConnection();
-        final String tableName = COURSES_TABLE_PREFIX + college;
+        final String tableName = COURSE_REGISTRATION_DATA_TABLE_PREFIX + college;
         jdbi.onDemand(RegistrationDataDao.class).createCoursesTableIfNotExists(tableName);
         jdbi.onDemand(RegistrationDataDao.class).updateCoursesTableBulk(tableName,
-                coursesMap.keySet(), coursesMap.values());
-
-
-        // ELLUCIAN_REGISTRATION_COURSES_RELATIVE_PATH
+                coursesMap.keySet(), coursesMap.values(), coursesMap.keySet());
     }
 
     private static Map<String, String> getCourses(final String baseDataPage, final Set<String> termIds) throws IOException {
@@ -57,9 +53,6 @@ public class CourseScraper extends EllucianDataScraper {
                 }
                 parsingJob:
                 while (inputLine != null) {
-//                while ((!inputLine.contains(ELLUCIAN_SS_COURSE_DATA_COURSE_MARKER_I)
-//                        && (!inputLine.contains(ELLUCIAN_SS_COURSE_DATA_COURSE_MARKER_II)))
-//                        || inputLine.contains(ELLUCIAN_SS_TERM_DATA_FALSE_MARKER)) {
                     while (!inputLine.contains(ELLUCIAN_SS_COURSE_DATA_COURSE_MARKER_I)
                             || inputLine.contains(ELLUCIAN_SS_TERM_DATA_FALSE_MARKER)) {
                         inputLine = in.readLine();
