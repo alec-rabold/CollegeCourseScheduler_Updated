@@ -283,6 +283,7 @@ public class Constants {
     public static final String ERROR_CODE_MESSAGE = "errorMessage";
 
     public static final String ERROR_MESSAGE_BASE = "Sorry, something went wrong.";
+    public static final String ERROR_MESSAGE_GENERIC = "We will be looking into this issue shortly.";
     public static final String ERROR_MESSAGE_404 = "We weren't able to find the page you requested.";
     public static final String ERROR_MESSAGE_500 = "We weren't able to complete your request.";
 

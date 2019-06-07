@@ -50,7 +50,6 @@ public abstract class EllucianDataScraper {
         try {
             final URL url = new URL(dataPage);
             final HttpURLConnection http = (HttpURLConnection) url.openConnection();
-//            final HttpsURLConnection http = (HttpsURLConnection) url.openConnection();
 
             http.setDoOutput(false); // might be necessary for certain security setups (403 error)
             http.setUseCaches(false);
@@ -78,20 +77,6 @@ public abstract class EllucianDataScraper {
         }
         return null;
     }
-
-//    public static String formatTermParameters(final Set<String> termIds, final boolean isCoursePage) {
-//        final StringBuilder paramBuilder = new StringBuilder();
-//        for(final String term : termIds) {
-//            // TODO: simplify
-//            if(isCoursePage) {
-//                paramBuilder.append(ELLUCIAN_SS_COURSE_DATA_FORM_TERM + term);
-//            }
-//            else {
-//                paramBuilder.append(ELLUCIAN_SS_TERM_DATA_FORM_TERM + term);
-//            }
-//        }
-//        return paramBuilder.toString();
-//    }
 
     public static String formatSubjectParameters(final Set<String> subjects) {
         final StringBuilder paramBuilder = new StringBuilder();

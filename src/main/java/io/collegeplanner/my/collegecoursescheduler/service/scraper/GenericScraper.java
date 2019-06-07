@@ -256,8 +256,6 @@ public abstract class GenericScraper {
                     for (final CourseSectionDto crs : currentSchedule) {
                         final int numSeatsAvailable = Integer.parseInt(crs.getSeats().substring(0, crs.getSeats().indexOf("/")));
                         if (!(numSeatsAvailable > 0)) {
-                            // this "option-check" is down here instead of a few lines up because
-                            //
                             if (!userOptions.isShowWaitlistedClasses()) {
                                 continue permutations;
                             }
@@ -720,6 +718,17 @@ public abstract class GenericScraper {
     * representation of 15min increments starting at 8:00am (800)
     * Ex: "800-850" --> 1111 (8:45, 8:30, 8:15, 8:00)
     *  "1030-1120" --> 0011 1100 0000 0000 (11:15, 11:00, 10:45, 10:30)
+     *
+     *  TODO: Fails for classes that are very close in start/end times
+     *
+     *  Ex: Harper [Fall 2019] : COMPUTER SCIENCE I - 38078 - CSC 121 - 004
+     *      Class 1: Class	    6:30 pm - 7:45 pm	MW
+     *      Class 2: Laboratory	7:55 pm - 8:45 pm	MW
+     *  Marked as a collision since 7:45pm and 7:55pm are in the same "bit"
+     *
+     *  Consider using BigInteger class with increments of 5 or 10 minutes
+     *      - Evaluate whether speed suffers since long if more performant
+     *
      */
     public final static long convertTimeblockToStringOfBits(final String timeBlock) {
         // TODO: verify "timeBlock" adheres to correct form / create parser with RegEx(?)
@@ -755,24 +764,24 @@ public abstract class GenericScraper {
 
     private String time24to12(final int time) {
         final String s = ((Integer)time).toString();
-        final int hr = Integer.parseInt((s.length() == 3) ? s.substring(0,1) : s.substring(0,2));
-        final String min = s.substring(s.length()-2, s.length());
-        return (((hr<=12) ? hr : hr-12) + ":" + min + " " + ((hr>=12) ? "pm" : "am"));
+        final int hr = Integer.parseInt((s.length() == 3) ? s.substring(0, 1) : s.substring(0, 2));
+        final String min = s.substring(s.length() - 2);
+        return (((hr <= 12) ? hr : hr - 12) + ":" + min + " " + ((hr >= 12) ? "pm" : "am"));
     }
     private String time24to12(final String timeframe) {
         final StringBuilder timeblock = new StringBuilder();
 
-        String s = timeframe.substring(0,timeframe.indexOf("-"));
-        int hr = Integer.parseInt((s.length() == 3) ? s.substring(0,1) : s.substring(0,2));
-        String min = s.substring(s.length()-2, s.length());
-        timeblock.append(((hr<=12) ? hr : hr-12) + ":" + min + ((hr>=12) ? "pm" : "am"));
+        String s = timeframe.substring(0, timeframe.indexOf("-"));
+        int hr = Integer.parseInt((s.length() == 3) ? s.substring(0, 1) : s.substring(0, 2));
+        String min = s.substring(s.length() - 2);
+        timeblock.append(((hr <= 12) ? hr : hr - 12) + ":" + min + ((hr >= 12) ? "pm" : "am"));
 
         timeblock.append(" - ");
 
         s = timeframe.substring(timeframe.indexOf("-") + 1);
-        hr = Integer.parseInt((s.length() == 3) ? s.substring(0,1) : s.substring(0,2));
-        min = s.substring(s.length()-2, s.length());
-        timeblock.append(((hr<=12) ? hr : hr-12) + ":" + min + ((hr>=12) ? "pm" : "am"));
+        hr = Integer.parseInt((s.length() == 3) ? s.substring(0, 1) : s.substring(0, 2));
+        min = s.substring(s.length() - 2);
+        timeblock.append(((hr <= 12) ? hr : hr - 12) + ":" + min + ((hr >= 12) ? "pm" : "am"));
 
         return timeblock.toString();
     }

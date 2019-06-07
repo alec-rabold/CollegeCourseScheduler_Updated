@@ -4,12 +4,14 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
 import static io.collegeplanner.my.collegecoursescheduler.util.Constants.*;
+
 
 @Controller
 public class ErrorHandlingController implements ErrorController {
@@ -19,7 +21,7 @@ public class ErrorHandlingController implements ErrorController {
                               final ModelMap modelMap) {
         final Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
-        if (status != null) {
+        if (!ObjectUtils.isEmpty(status)) {
             final Integer statusCode = Integer.valueOf(status.toString());
             modelMap.addAttribute(ERROR_CODE_ATTRIBUTE, statusCode);
 
@@ -31,11 +33,11 @@ public class ErrorHandlingController implements ErrorController {
                 modelMap.addAttribute(ERROR_CODE_MESSAGE, ERROR_MESSAGE_500);
             }
             else {
-                modelMap.addAttribute(ERROR_CODE_MESSAGE, ERROR_MESSAGE_BASE);
+                modelMap.addAttribute(ERROR_CODE_MESSAGE, ERROR_MESSAGE_GENERIC);
             }
         }
 
-        return "error";
+        return ERROR_VIEW;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package io.collegeplanner.my.collegecoursescheduler.controller;
 
-import io.collegeplanner.my.collegecoursescheduler.model.dto.PermutationsJobResultsDto;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.FormParametersDto;
+import io.collegeplanner.my.collegecoursescheduler.model.dto.PermutationsJobResultsDto;
 import io.collegeplanner.my.collegecoursescheduler.model.view.CollegeRepositoryData;
 import io.collegeplanner.my.collegecoursescheduler.repository.RegistrationDataDao;
 import io.collegeplanner.my.collegecoursescheduler.service.ScheduleAnalyzerJob;
@@ -50,8 +50,8 @@ public class VisualScheduleBuilderController {
         ScheduleAnalyzerJob.runScheduleAnalyzerJob(collegeName, formParameters, request, response);
     }
 
-    @PostMapping(value = "/api/{collegeName}/results")
     @ResponseBody
+    @PostMapping(value = "/api/{collegeName}/results")
     public PermutationsJobResultsDto returnSchedulePermutations(@PathVariable final String collegeName,
                                                                 final FormParametersDto formParameters) {
         return ScheduleAnalyzerJob.runScheduleAnalyzerJob(collegeName, formParameters, null, null);

@@ -103,6 +103,7 @@ public class EllucianScraper extends GenericScraper {
                 chainedParser = parseData(chainedParser.getEndIndex() + TWO_UNITS,
                         ELLUCIAN_SCHEDULE_NUMBER_MARKER_END, inputLine);
                 courseBundleSchedNum = chainedParser.getData();
+
                 // newCourse.setSchedNum(chainedParser.getData());
 
                 /** CourseID */
@@ -207,6 +208,11 @@ public class EllucianScraper extends GenericScraper {
                 // TODO: simplify this so less if-else statements.. (define an ImmutableMap in Constants with corresponding data/index)
                 // Parse data line-by-line
                 /** Times */
+                final String parsedClassType = parseData(ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START,
+                        ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START.length(), ELLUCIAN_SECTIONS_TABLE_COL_MARKER_END,
+                        inputLine).getData();
+                newCourse.setType(parsedClassType);
+                newCourse.setCourse(courseBundleID + formatClassType(parsedClassType)); // include course type in course name ("CS-107 [LEC]")
                 inputLine = in.readLine();
                 final String parsedTimeblock = parseData(ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START,
                         ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START.length(), ELLUCIAN_SECTIONS_TABLE_COL_MARKER_END,
@@ -222,6 +228,10 @@ public class EllucianScraper extends GenericScraper {
                 final String parsedDays = parseData(ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START,
                         ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START.length(), ELLUCIAN_SECTIONS_TABLE_COL_MARKER_END,
                         inputLine).getData();
+                // TODO: add support for Saturday classes (ex. Harper CSC-121)
+                if(parsedDays.contains("S")) {
+                    continue nextInput;
+                }
                 newCourse.getDays().add(parsedDays);
                 /** Location */
                 inputLine = in.readLine();
@@ -235,9 +245,9 @@ public class EllucianScraper extends GenericScraper {
                 final String scheduleType = parseData(ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START,
                         ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START.length(), ELLUCIAN_SECTIONS_TABLE_COL_MARKER_END,
                         inputLine).getData();
-                final String formattedSchedType = formatSchedType(scheduleType);
-                newCourse.setCourse(courseBundleID + formattedSchedType); // include course type in course name ("CS-107 [LEC]")
-                newCourse.setType(formattedSchedType);
+                final String formattedSchedType = formatClassType(scheduleType);
+                // newCourse.setCourse(courseBundleID + formattedSchedType); // include course type in course name ("CS-107 [LEC]")
+                // newCourse.setType(formattedSchedType);
                 /** Instructor */
                 inputLine = in.readLine();
                 final String parsedInstructor = parseData(ELLUCIAN_SECTIONS_TABLE_COL_MARKER_START,
@@ -248,6 +258,9 @@ public class EllucianScraper extends GenericScraper {
                 if(!firstClassInBundle) {
                     if(!StringUtils.equals(newCourse.getType(), parentCourse.getType())) {
                         newCourse.setParentCourse(parentCourse);
+                        if(StringUtils.containsIgnoreCase(formattedSchedType, "combined")) {
+                            parentCourse.setParentCourse(newCourse);
+                        }
                     }
                 }
 
@@ -411,10 +424,13 @@ public class EllucianScraper extends GenericScraper {
     }
 
     // TODO: don't hardcode strings (put into Constants)
-    private static String formatSchedType(final String scheduleType) {
+    private static String formatClassType(final String scheduleType) {
         switch(scheduleType) {
+            case "Class":
             case "Primary Meeting":
                 return " [LEC]";
+            case "Laboratory":
+                return " [LAB]";
             case "Conference":
                 return " [CONF]";
             case "Independent Study/Research":
