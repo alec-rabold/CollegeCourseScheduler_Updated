@@ -33,6 +33,7 @@ import static io.collegeplanner.my.collegecoursescheduler.util.Constants.*;
 @Setter
 // TODO: keep reducing to core components of a "Generic Scraper"
 // TODO: this isn't even a "scraper" anymore.. refactor/rename/modularize
+// TODO: this whole class needs some serious re-working.. but for now "it works"
 public abstract class GenericScraper {
 
     @Autowired
@@ -92,20 +93,7 @@ public abstract class GenericScraper {
         final long timeStartForPermutations = System.currentTimeMillis();
         final PriorityQueue<ScheduleDto> validSchedules = new PriorityQueue<>();
         final PermutationsJobResultsDto results = new PermutationsJobResultsDto();
-
-        // TODO: crude mobile detection.. replace with feature lookbehind
-        try {
-            final String userAgent = request.getHeader("User-Agent");
-            if (StringUtils.isNotEmpty(userAgent)) {
-                if (userAgent.contains("Mobile")) {
-                    this.setMobileBrowser(true);
-                } else {
-                    this.setMobileBrowser(false);
-                }
-            }
-        } catch(final NullPointerException e) {
-            log.debug("No User-Agent header found in request", e);
-        }
+        final Set<String> usedIterationBlocks = new HashSet<>();
 
         try {
             // Sort the course lists by size to allow for efficient dynamic programming techniques
@@ -124,9 +112,19 @@ public abstract class GenericScraper {
 
                 if(this.getElapsedTime(timeStartForPermutations) > MAX_TIMEOUT_IN_MS) {
                     log.warn("Thread was interrupted during permutations due to MAX_TIMEOUT");
+                    System.out.println("Thread was interrupted during permutations due to MAX_TIMEOUT");
                     // this.timedOut = true;
                     results.setResultCode(RESULT_CODE_PARTIAL_CONTENT);
-                    return results;
+                    // return results;
+                    break permutations;
+                }
+
+                // TODO: POC TESTING, improve later
+                if(userOptions.isInstantRandomSchedules() && validSchedules.size() >= DEFAULT_NUM_SCHEDULES) {
+                    log.debug("Default number of random schedules reached. Returning schedules.");
+                    results.setResultCode(RESULT_CODE_OK);
+//                    return results;
+                    break permutations;
                 }
 
                 this.numPermutations++;
@@ -156,7 +154,8 @@ public abstract class GenericScraper {
                             if(permString.length() > 2) {
                                 storedTimeblocks.put(permString, COLLISION_TIMEBLOCK);
                             }
-                            iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses, this.numChosenCourses);
+                            iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses,
+                                    this.numChosenCourses, userOptions.isInstantRandomSchedules(), usedIterationBlocks);
                             continue permutations;
                             // TODO: do I need the "iterationVariables = " part, or will Java retain the correct values
                             // TODO:   (i.e. check whether pass-by-value vs. pass-by-reference)
@@ -171,7 +170,9 @@ public abstract class GenericScraper {
                     final long[] retrievedBlock = storedTimeblocks.get(permString);
                     // See if the HashMap has this block marked as a schedule with collisions
                     if(Arrays.equals(retrievedBlock, COLLISION_TIMEBLOCK)){
-                        iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses, this.numChosenCourses);
+//                        iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses, this.numChosenCourses);
+                        iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses,
+                                this.numChosenCourses, userOptions.isInstantRandomSchedules(), usedIterationBlocks);
                         continue permutations;
                     }
                     else {
@@ -205,7 +206,9 @@ public abstract class GenericScraper {
                                     if ((bits & combinedTimeBlocks[j]) != 0) {
                                         // store the collided permutation so we don't have to do this calculation tons of unnecessary times
                                         storedTimeblocks.put(permString, COLLISION_TIMEBLOCK);
-                                        iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses, this.numChosenCourses);
+//                                        iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses, this.numChosenCourses);
+                                        iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses,
+                                                this.numChosenCourses, userOptions.isInstantRandomSchedules(), usedIterationBlocks);
                                         continue permutations;
                                     } else {
                                         // bitwise OR
@@ -233,7 +236,9 @@ public abstract class GenericScraper {
                                 final long bits = convertTimeblockToStringOfBits(countIndexedCourses.get(lastCourse).get(iterationVariables[lastCourse]).getTimes().get(multipleDaySlots));
                                 // bitwise AND
                                 if((bits & combinedTimeBlocks[i]) != 0) {
-                                    iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses, this.numChosenCourses);
+//                                    iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses, this.numChosenCourses);
+                                    iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses,
+                                            this.numChosenCourses, userOptions.isInstantRandomSchedules(), usedIterationBlocks);
                                     continue permutations;
                                 } else {
                                     // bitwise OR
@@ -244,7 +249,9 @@ public abstract class GenericScraper {
                     }
                 }
 
-                iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses, this.numChosenCourses);
+//                iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses, this.numChosenCourses);
+                iterationVariables = ScraperUtils.incrementIterationVariables(iterationVariables, this.countIndexedCourses,
+                        this.numChosenCourses, userOptions.isInstantRandomSchedules(), usedIterationBlocks);
 
                 // If schedule makes it this far, it has no collisions
 
@@ -388,10 +395,6 @@ public abstract class GenericScraper {
                     validSchedules.poll();
                 }
             }
-            if(response != null) {
-                printTables(validSchedules, request, response, false);
-            }
-
 
             results.setResultCode(RESULT_CODE_OK);
 
@@ -399,9 +402,17 @@ public abstract class GenericScraper {
         catch(final Exception e) {
             results.setResultCode(RESULT_CODE_INTERNAL_SERVER_ERROR);
             log.fatal("Error in analyzing the permutations", e);
+            System.out.println("Error in analyzing the permutations");
 
         }
         finally {
+            if(response != null) {
+                try {
+                    printTables(validSchedules, request, response, false);
+                } catch (final Exception e) {
+                    log.error(e);
+                }
+            }
             // How could I do this with Stream API
             final ScheduleDto[] schedulesArray = new ScheduleDto[validSchedules.size()];
             for(int i = 0; i < schedulesArray.length; i++) {
@@ -449,11 +460,25 @@ public abstract class GenericScraper {
                                    final HttpServletRequest request,
                                    final HttpServletResponse response,
                                    final boolean wasInterrupted) throws IOException, ServletException {
+        // TODO: crude mobile detection.. replace with feature lookbehind
+        try {
+            final String userAgent = request.getHeader("User-Agent");
+            if (StringUtils.isNotEmpty(userAgent)) {
+                if (userAgent.contains("Mobile")) {
+                    this.setMobileBrowser(true);
+                } else {
+                    this.setMobileBrowser(false);
+                }
+            }
+        } catch(final NullPointerException e) {
+            log.debug("No User-Agent header found in request", e);
+        }
+
         final PrintWriter out = response.getWriter();
         try {
             // TODO: should just include header and footer in every request..
             request.getRequestDispatcher(JSP_VIEW_RESOLVER_PREFIX + HEADER_FILE_NAME)
-                .include(request, response);
+                    .include(request, response);
 
             final int size = validSchedules.size();
 
@@ -482,10 +507,15 @@ public abstract class GenericScraper {
             // Table header
             out.println("<div class='col-xs-6' style='text-align:center'>");
             out.println("<h2 class='numSched'>Schedule <span id='numSched' class='numSched' data-count='1'>" + Math.min(1, size) + "</span> of " + Math.min(25, size) + "</h2>");
-            if (!wasInterrupted)
+            if(userOptions.isInstantRandomSchedules()) {
+                out.println("<i>We generated " + Math.min(size, DEFAULT_NUM_SCHEDULES) + " schedules for you!");
+            }
+            else if (!wasInterrupted) {
                 out.println("<i>There are " + NumberFormat.getNumberInstance(Locale.US).format(size) + " valid permutations of your schedule - we filtered out " + NumberFormat.getNumberInstance(Locale.US).format((numPermutations - size)) + " that didn't work</i>");
-            else
+            }
+            else {
                 out.println("<i>There were too many permutations for your schedule so we ranked the first " + NumberFormat.getNumberInstance(Locale.US).format(numPermutations) + "." + "<br>We found " + NumberFormat.getNumberInstance(Locale.US).format(size) + " valid permutations of your schedule and filtered out " + NumberFormat.getNumberInstance(Locale.US).format((numPermutations - size)) + " that didn't work</i>");
+            }
             out.println("<br>");
             out.println("<i id='numValid' data-count='" + Math.min(25, size) + "'>Check out your top " + Math.min(25, size) + "!</i>");
             out.println("</div>");

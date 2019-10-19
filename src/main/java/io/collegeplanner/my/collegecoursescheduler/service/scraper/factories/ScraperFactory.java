@@ -1,6 +1,6 @@
 package io.collegeplanner.my.collegecoursescheduler.service.scraper.factories;
 
-import io.collegeplanner.my.collegecoursescheduler.model.dto.FormParametersDto;
+import io.collegeplanner.my.collegecoursescheduler.model.dto.ApiRequestDto;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.UserOptionsDto;
 import io.collegeplanner.my.collegecoursescheduler.service.scraper.GenericScraper;
 import io.collegeplanner.my.collegecoursescheduler.service.scraper.impl.*;
@@ -15,7 +15,7 @@ import static io.collegeplanner.my.collegecoursescheduler.util.Constants.*;
 public final class ScraperFactory {
 
     public static GenericScraper getScraperForCollege(final String collegeName,
-                                                      final FormParametersDto formParameters) {
+                                                      final ApiRequestDto formParameters) {
         final GenericScraper scraper;
 
         switch(collegeName) {
@@ -40,7 +40,7 @@ public final class ScraperFactory {
     }
 
    // TODO: legacy; change parameters so they don't need additional logic/processing
-    private static GenericScraper buildScraperFromParameters(final FormParametersDto params, final GenericScraper scraper) {
+    private static GenericScraper buildScraperFromParameters(final ApiRequestDto params, final GenericScraper scraper) {
         scraper.setUserOptions(
                 UserOptionsDto.builder()
                         .chosenCourseNames(Arrays.asList(params.getChosenCourses()))
@@ -53,6 +53,7 @@ public final class ScraperFactory {
                                 params.getUnavailableTimeblockEnd(), params.getUnavailableTimeblockDays()))
                         .daysPerWeekPreference(params.getShorterVsFewerClassesPreference().equals("more") ? -1 : 1)
                         .showOnlineClasses(Boolean.valueOf(params.getIncludeOnlineCourses()))
+                        .instantRandomSchedules(Boolean.valueOf(params.getInstantRandomSchedules()))
                         .build());
         scraper.setTermParameter(params.getSeason(), params.getYear());
         return scraper;

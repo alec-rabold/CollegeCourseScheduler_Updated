@@ -3,6 +3,7 @@ package io.collegeplanner.my.collegecoursescheduler.util;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.CourseSectionDto;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ScraperUtils {
 
@@ -45,9 +46,18 @@ public class ScraperUtils {
         return totalPermutations;
     }
 
+    // TODO: I know this is bad.. just POC testing
     public static int[] incrementIterationVariables(final int[] iterationVariables,
-                                                    final Map<Integer, List<CourseSectionDto>> possibleCourses, final int numCourses) {
+                                                    final Map<Integer, List<CourseSectionDto>> possibleCourses,
+                                                    final int numCourses, final boolean isInstantSchedules,
+                                                    final Set<String> usedIterationBlocks) {
+//        return incrementInterationVariablesRandom(iterationVariables, possibleCourses, numCourses, usedIterationBlocks);
+        return incrementIterationVariablesSequential(iterationVariables, possibleCourses, numCourses);
+    }
 
+    public static int[] incrementIterationVariablesSequential(final int[] iterationVariables,
+                                                              final Map<Integer, List<CourseSectionDto>> possibleCourses,
+                                                              final int numCourses) {
         // Increment the variables up
         iterationVariables[numCourses - 1] += 1;
         for(int i = numCourses - 1; i > 0; i--) {
@@ -58,6 +68,26 @@ public class ScraperUtils {
         }
         return iterationVariables;
     }
+
+    // TODO: temporary for testing; improve method later
+    public static int[] incrementInterationVariablesRandom(final int[] iterationVariables,
+                                                           final Map<Integer, List<CourseSectionDto>> possibleCourses,
+                                                           final int numCourses, final Set<String> usedIterationBlocks) {
+        while(true) {
+            final StringBuilder randomIteration = new StringBuilder();
+            for (int curCourse = numCourses - 1; curCourse >= 0; curCourse--) { // > vs v=
+                final int courseSize = possibleCourses.get(curCourse).size();
+                final int randomVar = ThreadLocalRandom.current().nextInt(0, courseSize);
+                iterationVariables[curCourse] = randomVar;
+                randomIteration.append(randomVar);
+            }
+            if (!usedIterationBlocks.contains(randomIteration.toString())) {
+                usedIterationBlocks.add(randomIteration.toString());
+                return iterationVariables;
+            }
+        }
+    }
+
 
     public static Set<String> getDepartmentsFromChosenClasses(final Collection<String> chosenClasses) {
         final Set<String> departments = new HashSet<>();

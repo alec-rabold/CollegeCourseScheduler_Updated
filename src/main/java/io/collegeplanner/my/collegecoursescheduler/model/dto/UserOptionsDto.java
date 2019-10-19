@@ -15,6 +15,7 @@ public class UserOptionsDto {
     private String[] unwantedProfessors;
     private String[] excludeProfessors;
     private boolean showWaitlistedClasses;
+    private boolean instantRandomSchedules;
     private long[] unavailableTimesBitBlocks;
     @Builder.Default
     private int daysPerWeekPreference = 1;

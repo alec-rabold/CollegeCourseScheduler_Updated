@@ -71,7 +71,8 @@ public class Constants {
     public static final String API_COMPLETE_PATH_PURDUE = API_RELATIVE_PATH + PURDUE_RELATIVE_PATH;
     public static final String API_COMPLETE_PATH_BROWN = API_RELATIVE_PATH + BROWN_RELATIVE_PATH;
 
-
+    /** Kinesis */
+    public static final String STREAM_NAME = "CollegePlannerUsageStream";
 
     /** Servlet config */
     public static final String JSP_VIEW_RESOLVER_PREFIX = "/WEB-INF/classes/templates/";
@@ -110,6 +111,7 @@ public class Constants {
     public static final int TEN_UNITS   = 10;
     public static final String SECONDS_ABBR = "s";
     public static final int SCHEDULE_NUM_LENGTH = 5;
+    public static final int DEFAULT_NUM_SCHEDULES = 10;
     public static final String SPACE_CHARACTER = " ";
     public static final String EMPTY_STRING = "";
     public static final String POUND_SIGN = "#";
@@ -285,7 +287,7 @@ public class Constants {
     public static final String ERROR_MESSAGE_BASE = "Sorry, something went wrong.";
     public static final String ERROR_MESSAGE_GENERIC = "We will be looking into this issue shortly.";
     public static final String ERROR_MESSAGE_404 = "We weren't able to find the page you requested.";
-    public static final String ERROR_MESSAGE_500 = "We weren't able to complete your request.";
+    public static final String ERROR_MESSAGE_500 = "We weren't able to complete your request. Please make sure you selected at least one course.";
 
     /** (Prepared) SQL Queries */
     public static final String PREPARED_QUERY_SELECT_ALL_FROM_TABLE = "SELECT * FROM <table>";
@@ -376,12 +378,12 @@ public class Constants {
 
     /** Immutable Collections */
     public static final Set<String> SUPPORTED_ELLUCIAN_COLLEGES = ImmutableSet.of(
-            GEORGIA_STATE_UNIVERSITY,
+//            GEORGIA_STATE_UNIVERSITY,
 //            OTTERBEIN_UNIVERSITY,
             WEBER_STATE_UNIVERSITY,
             DREXEL_UNIVERSITY,
-            PURDUE_UNIVERSITY,
-            PURDUE_UNIVERSITY_NORTHWEST,
+//            PURDUE_UNIVERSITY,
+//            PURDUE_UNIVERSITY_NORTHWEST,
             GEORGE_MASON_UNIVERSITY,
             UNIVERSITY_OF_TENNESSEE_KNOXVILLE,
             HARPER_COLLEGE,
@@ -395,9 +397,9 @@ public class Constants {
             .put(SAN_DIEGO_STATE_UNIVERSITY, SDSU_COURSE_REGISTRATION_DATA_TABLE)
             .put(UNIVERSITY_OF_CALIFORNIA_SANTA_BARBARA, UCSB_COURSE_REGISTRATION_DATA_TABLE)
             .put(UNIVERSITY_OF_CALIFORNIA_BERKELEY, BERKELEY_COURSE_REGISTRATION_DATA_TABLE)
-            .put(PURDUE_UNIVERSITY, PURDUE_COURSE_REGISTRATION_DATA_TABLE)
+//            .put(PURDUE_UNIVERSITY, PURDUE_COURSE_REGISTRATION_DATA_TABLE)
             .put(BROWN_UNIVERSITY, BROWN_COURSE_REGISTRATION_DATA_TABLE)
-            .put(GEORGIA_STATE_UNIVERSITY, GSU_COURSE_REGISTRATION_DATA_TABLE)
+//            .put(GEORGIA_STATE_UNIVERSITY, GSU_COURSE_REGISTRATION_DATA_TABLE)
             .put(GEORGE_MASON_UNIVERSITY, GMU_COURSE_REGISTRATION_DATA_TABLE)
             .put(GEORGIA_TECH, GEORGIA_TECH_COURSE_REGISTRATION_DATA_TABLE)
             .put(UNIVERSITY_OF_TENNESSEE_KNOXVILLE, UTK_COURSE_REGISTRATION_DATA_TABLE)
@@ -412,7 +414,7 @@ public class Constants {
             .put(SAN_DIEGO_STATE_UNIVERSITY, SDSU_PROFESSORS_TABLE)
             .put(UNIVERSITY_OF_CALIFORNIA_SANTA_BARBARA, UCSB_PROFESSORS_TABLE)
             .put(UNIVERSITY_OF_CALIFORNIA_BERKELEY, BERKELEY_PROFESSORS_TABLE)
-            .put(PURDUE_UNIVERSITY, PURDUE_PROFESSORS_TABLE)
+//            .put(PURDUE_UNIVERSITY, PURDUE_PROFESSORS_TABLE)
             .put(BROWN_UNIVERSITY, BROWN_PROFESSORS_TABLE)
             .put(GEORGIA_STATE_UNIVERSITY, GSU_PROFESSORS_TABLE)
             .put(GEORGE_MASON_UNIVERSITY, GMU_PROFESSORS_TABLE)

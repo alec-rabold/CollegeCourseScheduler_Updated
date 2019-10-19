@@ -19,15 +19,15 @@
                     <select name="season" class="form-control">
                     <c:choose>
                         <c:when test="${collegeName == Constants.UNIVERSITY_OF_WASHINGTON}">
-                            <option selected="selected">Fall</option>
+                            <option>Fall</option>
                             <option>Winter</option>
-                            <option>Spring</option>
+                            <option selected="selected">Spring</option>
                             <option>Summer</option>
                         </c:when>
                         <c:otherwise>
-                            <option selected="selected">Fall</option>
+                            <option>Fall</option>
                             <option>Winter</option>
-                            <option>Spring</option>
+                            <option selected="selected">Spring</option>
                             <option>Summer</option>
                         </c:otherwise>
                     </c:choose>
@@ -35,7 +35,8 @@
                 </div>
                 <div class="col-xs-4 col-md-2">
                     <select name="year" class="form-control">
-                        <option selected="selected">2019</option>
+                        <option selected="selected">2020</option>
+                        <option>2019</option>
                         <option>2018</option>
                         <option>2017</option>
                         <option>2016</option>
@@ -287,6 +288,26 @@
                             <label>
                                 <input type="radio" name="api_key" checked="checked" value="e652ec27-7b0d-4a24-9611-ce5ff46a6f08">
                                 No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-0 col-md-3"></div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-5">
+                <h4 class="form-h4"><span class="text-red">* </span>Random schedules or ranked schedules?</h4>
+                <div class="row">
+                    <div class="col-xs-12 col-md-9">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="instantRandomSchedules" value="true" checked="checked" required>
+                                Random schedules (fastest)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="instantRandomSchedules" value="false">
+                                Ranked Schedules (slower)
                             </label>
                         </div>
                     </div>

@@ -1,8 +1,8 @@
 package io.collegeplanner.my.collegecoursescheduler.util;
 
-import io.collegeplanner.my.collegecoursescheduler.model.dto.CourseSectionDto;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public final class ScheduleBuilderUtils {
 

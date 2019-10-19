@@ -1,7 +1,6 @@
 package io.collegeplanner.my.collegecoursescheduler.controller;
 
-import io.collegeplanner.my.collegecoursescheduler.model.dto.FormParametersDto;
-import io.collegeplanner.my.collegecoursescheduler.model.dto.PermutationsJobResultsDto;
+import io.collegeplanner.my.collegecoursescheduler.model.dto.ApiRequestDto;
 import io.collegeplanner.my.collegecoursescheduler.model.view.CollegeRepositoryData;
 import io.collegeplanner.my.collegecoursescheduler.repository.RegistrationDataDao;
 import io.collegeplanner.my.collegecoursescheduler.service.ScheduleAnalyzerJob;
@@ -13,7 +12,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,16 +44,8 @@ public class VisualScheduleBuilderController {
     public void runSchedulePermutations(final HttpServletRequest request,
                                         final HttpServletResponse response,
                                         @PathVariable final String collegeName,
-                                        final FormParametersDto formParameters) {
+                                        final ApiRequestDto formParameters) {
         ScheduleAnalyzerJob.runScheduleAnalyzerJob(collegeName, formParameters, request, response);
     }
-
-    @ResponseBody
-    @PostMapping(value = "/api/{collegeName}/results")
-    public PermutationsJobResultsDto returnSchedulePermutations(@PathVariable final String collegeName,
-                                                                final FormParametersDto formParameters) {
-        return ScheduleAnalyzerJob.runScheduleAnalyzerJob(collegeName, formParameters, null, null);
-    }
-
 }
 

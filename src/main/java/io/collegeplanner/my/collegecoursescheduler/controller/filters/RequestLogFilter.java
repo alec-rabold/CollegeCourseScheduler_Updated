@@ -1,7 +1,10 @@
 package io.collegeplanner.my.collegecoursescheduler.controller.filters;
 
+import com.amazonaws.util.IOUtils;
+import io.collegeplanner.my.collegecoursescheduler.service.FirehoseStreamService;
 import io.collegeplanner.my.collegecoursescheduler.util.GenericUtils;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -14,6 +17,10 @@ import static io.collegeplanner.my.collegecoursescheduler.util.Constants.REFERER
 @Log4j2
 @Component
 public class RequestLogFilter implements Filter {
+
+    @Autowired
+    private FirehoseStreamService firehoseStreamService;
+
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response,
                          final FilterChain chain) throws IOException, ServletException {
@@ -24,6 +31,9 @@ public class RequestLogFilter implements Filter {
             log.info("Request from {} {} : {} \t Referer: {}",
                     remoteAddress, req.getMethod(), req.getRequestURI(), req.getHeader(REFERER_HEADER));
         }
+        final String message = IOUtils.toString(request.getInputStream());
+        firehoseStreamService.addToStream(message);
+
         chain.doFilter(request, response);
     }
 

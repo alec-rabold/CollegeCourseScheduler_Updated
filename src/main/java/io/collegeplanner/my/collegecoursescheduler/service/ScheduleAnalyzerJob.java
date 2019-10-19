@@ -1,6 +1,6 @@
 package io.collegeplanner.my.collegecoursescheduler.service;
 
-import io.collegeplanner.my.collegecoursescheduler.model.dto.FormParametersDto;
+import io.collegeplanner.my.collegecoursescheduler.model.dto.ApiRequestDto;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.PermutationsJobResultsDto;
 import io.collegeplanner.my.collegecoursescheduler.service.scraper.GenericScraper;
 import io.collegeplanner.my.collegecoursescheduler.service.scraper.factories.ScraperFactory;
@@ -17,10 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 @Setter
 public final class ScheduleAnalyzerJob {
 
-    // TODO: Servlet Context shouldn't be available outside web module/layer
-
     public static PermutationsJobResultsDto runScheduleAnalyzerJob(final String collegeName,
-                                                                   final FormParametersDto formParameters,
+                                                                   final ApiRequestDto formParameters,
                                                                    final HttpServletRequest request,
                                                                    final HttpServletResponse response)  {
         final GenericScraper scraper = ScraperFactory.getScraperForCollege(collegeName, formParameters);
@@ -42,11 +40,12 @@ public final class ScheduleAnalyzerJob {
 
         final PermutationsJobResultsDto results = scraper.doPermutationsAndGetApiResults(request, response);
 
+        System.out.println("Reached here");
         return results;
     }
 
     /**
-    private void pushUsageDataToDatabase(final HttpServletRequest request, final FormParametersDto params) {
+    private void pushUsageDataToDatabase(final HttpServletRequest request, final ApiRequestDto params) {
         DatabaseConnection.writeToDatalog(
                 request, scraper.getElapsedTime(), params.getSuggestionsTextbox(),
                 params.getProblemsTextbox(), params.getChosenCourses(), scraper.getNumPermutations(), scraper.isTimedOut()

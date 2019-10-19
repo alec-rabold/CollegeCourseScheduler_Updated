@@ -11,10 +11,11 @@ import lombok.experimental.Wither;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FormParametersDto {
+public class ApiRequestDto {
     private String year;
     private String season;
     private String includeOnlineCourses;
+    private String instantRandomSchedules;
     private String includeWaitlistedCourses;
     private String relaxedVsCompactPreference;
     private String shorterVsFewerClassesPreference;
