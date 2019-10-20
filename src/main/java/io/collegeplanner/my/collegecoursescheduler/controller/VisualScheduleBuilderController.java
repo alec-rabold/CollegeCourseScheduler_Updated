@@ -1,8 +1,11 @@
 package io.collegeplanner.my.collegecoursescheduler.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.ApiRequestDto;
 import io.collegeplanner.my.collegecoursescheduler.model.view.CollegeRepositoryData;
 import io.collegeplanner.my.collegecoursescheduler.repository.RegistrationDataDao;
+import io.collegeplanner.my.collegecoursescheduler.service.FirehoseStreamService;
 import io.collegeplanner.my.collegecoursescheduler.service.ScheduleAnalyzerJob;
 import lombok.extern.log4j.Log4j2;
 import org.jdbi.v3.core.Jdbi;
@@ -28,6 +31,12 @@ public class VisualScheduleBuilderController {
     @Autowired
     private Jdbi jdbi;
 
+    @Autowired
+    private ObjectMapper mapper;
+
+    @Autowired
+    private FirehoseStreamService firehoseStreamService;
+
     @RequestMapping(value = "/{collegeName}")
     public String userPreferencesForSchedule(@PathVariable final String collegeName,
                                              final ModelMap modelMap) {
@@ -44,7 +53,8 @@ public class VisualScheduleBuilderController {
     public void runSchedulePermutations(final HttpServletRequest request,
                                         final HttpServletResponse response,
                                         @PathVariable final String collegeName,
-                                        final ApiRequestDto formParameters) {
+                                        final ApiRequestDto formParameters) throws JsonProcessingException {
+        firehoseStreamService.addToStream(FIREHOSE_USAGE_STREAM, mapper.writeValueAsString(formParameters));
         ScheduleAnalyzerJob.runScheduleAnalyzerJob(collegeName, formParameters, request, response);
     }
 }

@@ -72,7 +72,7 @@ public class Constants {
     public static final String API_COMPLETE_PATH_BROWN = API_RELATIVE_PATH + BROWN_RELATIVE_PATH;
 
     /** Kinesis */
-    public static final String STREAM_NAME = "CollegePlannerUsageStream";
+    public static final String FIREHOSE_USAGE_STREAM = "CollegePlannerInteractionStream";
 
     /** Servlet config */
     public static final String JSP_VIEW_RESOLVER_PREFIX = "/WEB-INF/classes/templates/";

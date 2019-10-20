@@ -40,7 +40,6 @@ public final class ScheduleAnalyzerJob {
 
         final PermutationsJobResultsDto results = scraper.doPermutationsAndGetApiResults(request, response);
 
-        System.out.println("Reached here");
         return results;
     }
 

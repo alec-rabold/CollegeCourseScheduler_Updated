@@ -1,6 +1,5 @@
 package io.collegeplanner.my.collegecoursescheduler.controller.filters;
 
-import com.amazonaws.util.IOUtils;
 import io.collegeplanner.my.collegecoursescheduler.service.FirehoseStreamService;
 import io.collegeplanner.my.collegecoursescheduler.util.GenericUtils;
 import lombok.extern.log4j.Log4j2;
@@ -31,9 +30,6 @@ public class RequestLogFilter implements Filter {
             log.info("Request from {} {} : {} \t Referer: {}",
                     remoteAddress, req.getMethod(), req.getRequestURI(), req.getHeader(REFERER_HEADER));
         }
-        final String message = IOUtils.toString(request.getInputStream());
-        firehoseStreamService.addToStream(message);
-
         chain.doFilter(request, response);
     }
 

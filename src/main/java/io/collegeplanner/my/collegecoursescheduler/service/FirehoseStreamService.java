@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.nio.ByteBuffer;
 
-import static io.collegeplanner.my.collegecoursescheduler.util.Constants.STREAM_NAME;
-
 @Service
 public class FirehoseStreamService {
 
@@ -20,10 +18,10 @@ public class FirehoseStreamService {
         this.firehoseClient = firehoseClient;
     }
 
-    public void addToStream(final String messageJson) {
-        final Record record = new Record().withData(ByteBuffer.wrap(messageJson.getBytes()));
+    public void addToStream(final String streamName, final String message) {
+        final Record record = new Record().withData(ByteBuffer.wrap(message.getBytes()));
         final PutRecordRequest putRecordRequest = new PutRecordRequest()
-                .withDeliveryStreamName(STREAM_NAME)
+                .withDeliveryStreamName(streamName)
                 .withRecord(record);
         firehoseClient.putRecord(putRecordRequest);
     }
