@@ -3,6 +3,7 @@ package io.collegeplanner.my.collegecoursescheduler.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.collegeplanner.my.collegecoursescheduler.model.dto.ApiRequestDto;
+import io.collegeplanner.my.collegecoursescheduler.model.dto.KinesisRecordDto;
 import io.collegeplanner.my.collegecoursescheduler.model.view.CollegeRepositoryData;
 import io.collegeplanner.my.collegecoursescheduler.repository.RegistrationDataDao;
 import io.collegeplanner.my.collegecoursescheduler.service.FirehoseStreamService;
@@ -54,7 +55,7 @@ public class VisualScheduleBuilderController {
                                         final HttpServletResponse response,
                                         @PathVariable final String collegeName,
                                         final ApiRequestDto formParameters) throws JsonProcessingException {
-        firehoseStreamService.addToStream(FIREHOSE_USAGE_STREAM, mapper.writeValueAsString(formParameters));
+        firehoseStreamService.addToStream(FIREHOSE_USAGE_STREAM, mapper.writeValueAsString(new KinesisRecordDto(collegeName, formParameters)));
         ScheduleAnalyzerJob.runScheduleAnalyzerJob(collegeName, formParameters, request, response);
     }
 }
